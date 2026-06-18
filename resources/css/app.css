@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Parisienne&family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap');
+@import '@tabler/icons-webfont/dist/tabler-icons.css';
+@import "tailwindcss";
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@source inline("fixed left-0 right-0 max-w-full z-40 flex justify-center px-4 py-2.5 bg-white/95 backdrop-blur-sm border-b shadow-none");
+
+@theme {
+
+    --font-sans: "Inter", sans-serif;
+    --font-heading: "Plus Jakarta Sans", sans-serif;
+    --font-accent: "Parisienne", cursive;
+
+    --color-primary: #1E5AA8;
+    --color-primary-light: #3B82D6;
+    --color-primary-dark: #1E3A5F;
+
+    --color-secondary: #F97316;
+    --color-secondary-light: #FB923C;
+    --color-secondary-dark: #EA580C;
+
+    --color-accent: #FFB703;
+    --color-accent-light: #FFD166;
+    --color-accent-dark: #E09F00;
+
+    --color-background: #FFFFFF;
+    --color-secondary-background: #F8FAFC;
+    --color-surface: #EEF6FF;
+
+    --color-heading-text: #0F172A;
+    --color-body-text: #475569;
+    --color-border: #CBD5E1;
+
+    --radius-sm: 0.375rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1rem;
+    --radius-xl: 1.5rem;
+
+    --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.08);
+    --shadow-card-hover: 0 10px 40px rgba(0, 0, 0, 0.12);
+}
