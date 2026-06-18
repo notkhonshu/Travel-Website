@@ -1,5 +1,3 @@
-{{-- resources/views/components/section/type11.blade.php --}}
-
 @php
     $listings          = $listings          ?? collect();
     $categories        = $categories        ?? [];
@@ -22,11 +20,11 @@
     ]);
 @endphp
 
-<section id="listing" class="pt-8 pb-14 sm:pt-6 sm:pb-10">
-    <div class="max-w-[1280px] mx-auto px-8 sm:px-4">
+<section id="listing" class="pt-8 pb-14 sm:pt-4 sm:pb-10">
+    <div class="max-w-[1280px] mx-auto px-8 md:px-6 sm:px-4">
 
         {{-- ── Top bar: count + sort ───────────────────────────────────────── --}}
-        <div class="flex items-center justify-between flex-wrap gap-3 mt-[3rem]">
+        <div class="flex items-center justify-between flex-wrap gap-3 mt-10 sm:mt-6 mb-4">
 
             <p class="text-sm text-[var(--color-body-text)]/60 m-0">
                 <span class="font-semibold text-[var(--color-heading-text)]">{{ $listings->count() }}+</span>
@@ -53,7 +51,7 @@
                 @if($q)
                     <input type="hidden" name="q" value="{{ $q }}">
                 @endif
-                <label for="tbg-sort" class="text-xs text-[var(--color-body-text)]/50">Sort by</label>
+                <label for="tbg-sort" class="text-xs text-[var(--color-body-text)]/50 whitespace-nowrap">Sort by</label>
                 <select
                     id="tbg-sort"
                     name="sort"
@@ -64,8 +62,8 @@
                 >
                     <option value="default"    @selected($sort === 'default')>Featured</option>
                     <option value="rating"     @selected($sort === 'rating')>Top Rated</option>
-                    <option value="price_asc"  @selected($sort === 'price_asc')>Price: Low to High</option>
-                    <option value="price_desc" @selected($sort === 'price_desc')>Price: High to Low</option>
+                    <option value="price_asc"  @selected($sort === 'price_asc')>Price: Low → High</option>
+                    <option value="price_desc" @selected($sort === 'price_desc')>Price: High → Low</option>
                 </select>
             </form>
         </div>
@@ -76,8 +74,7 @@
 
                 @if($activeDestination)
                     <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium
-                                 bg-primary/10 text-primary
-                                 border border-primary/20">
+                                 bg-primary/10 text-primary border border-primary/20">
                         <i class="ti ti-map-pin text-[12px]" aria-hidden="true"></i>
                         {{ $destinationLabel }}
                         <a href="{{ route('trip.index', \Illuminate\Support\Arr::except($baseQuery, 'destination')) }}"
@@ -91,8 +88,7 @@
 
                 @if($q)
                     <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium
-                                 bg-primary/10 text-primary
-                                 border border-primary/20">
+                                 bg-primary/10 text-primary border border-primary/20">
                         <i class="ti ti-search text-[12px]" aria-hidden="true"></i>
                         "{{ $q }}"
                         <a href="{{ route('trip.index', \Illuminate\Support\Arr::except($baseQuery, 'q')) }}"
@@ -108,41 +104,44 @@
         @endif
 
         {{-- ── Category filter tabs ─────────────────────────────────────────── --}}
-        <div class="flex items-center gap-2 flex-wrap mb-8">
-            @php
-                $allTab = ['slug' => 'all', 'label' => 'All'];
-                $tabs   = array_merge([$allTab], $categories);
-            @endphp
-
-            @foreach($tabs as $cat)
+        <div class="-mx-8 md:-mx-6 sm:-mx-4 px-8 md:px-6 sm:px-4
+                    overflow-x-auto scrollbar-none mb-8 sm:mb-6">
+            <div class="flex items-center gap-2 w-max min-w-full pb-1">
                 @php
-                    $isActive = $activeCategory === $cat['slug'];
-                    $href = route('trip.index', array_filter([
-                        'category'    => $cat['slug'] !== 'all' ? $cat['slug'] : null,
-                        'destination' => $activeDestination ?: null,
-                        'sort'        => $sort !== 'default'    ? $sort         : null,
-                        'q'           => $q ?: null,
-                    ]));
+                    $allTab = ['slug' => 'all', 'label' => 'All'];
+                    $tabs   = array_merge([$allTab], $categories);
                 @endphp
-                <a href="{{ $href }}"
-                   class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium
-                          border transition-all duration-200
-                          {{ $isActive
-                              ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white'
-                              : 'bg-white border-[var(--color-border)] text-[var(--color-body-text)]/70 hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]'
-                          }}"
-                >
-                    @if($cat['slug'] === 'all')
-                        <i class="ti ti-layout-grid text-[13px]" aria-hidden="true"></i>
-                    @endif
-                    {{ $cat['label'] }}
-                </a>
-            @endforeach
+
+                @foreach($tabs as $cat)
+                    @php
+                        $isActive = $activeCategory === $cat['slug'];
+                        $href = route('trip.index', array_filter([
+                            'category'    => $cat['slug'] !== 'all' ? $cat['slug'] : null,
+                            'destination' => $activeDestination ?: null,
+                            'sort'        => $sort !== 'default'    ? $sort         : null,
+                            'q'           => $q ?: null,
+                        ]));
+                    @endphp
+                    <a href="{{ $href }}"
+                       class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium
+                              border transition-all duration-200 whitespace-nowrap
+                              {{ $isActive
+                                  ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white'
+                                  : 'bg-white border-[var(--color-border)] text-[var(--color-body-text)]/70 hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]'
+                              }}"
+                    >
+                        @if($cat['slug'] === 'all')
+                            <i class="ti ti-layout-grid text-[13px]" aria-hidden="true"></i>
+                        @endif
+                        {{ $cat['label'] }}
+                    </a>
+                @endforeach
+            </div>
         </div>
 
         {{-- ── Grid ────────────────────────────────────────────────────────── --}}
         @if($listings->isNotEmpty())
-            <div class="grid grid-cols-4 lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-2 gap-5">
+            <div class="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-5 sm:gap-4">
                 @foreach($listings as $item)
                     <div class="relative">
 
@@ -185,7 +184,7 @@
                 @endforeach
             </div>
         @else
-            <div class="flex flex-col items-center justify-center py-24 gap-4 text-center">
+            <div class="flex flex-col items-center justify-center py-20 sm:py-14 gap-4 text-center">
                 <i class="ti ti-search text-4xl text-[var(--color-body-text)]/20" aria-hidden="true"></i>
                 <p class="text-[var(--color-body-text)]/50 text-sm m-0">
                     No results found
