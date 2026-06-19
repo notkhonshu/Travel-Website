@@ -13,7 +13,7 @@
                 'link'   => asset('assets/img/static/beach.jpg'),
                 'alt'    => 'The Bali Guides Adventure',
             ],
-            'scroll_to' => '#',
+            'scroll_to' => '#gallery',
         ],
     ])
 
