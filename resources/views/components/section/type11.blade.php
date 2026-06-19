@@ -20,7 +20,7 @@
     ]);
 @endphp
 
-<section id="listing" class="pt-8 pb-14 sm:pt-4 sm:pb-10">
+<section id="listing" class="pt-8 pb-10 pt-15">
     <div class="max-w-[1280px] mx-auto px-8 md:px-6 sm:px-4">
 
         {{-- ── Top bar: count + sort ───────────────────────────────────────── --}}
