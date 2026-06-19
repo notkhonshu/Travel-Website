@@ -4,7 +4,7 @@
 @endphp
 
 <section id="{{ $heroId }}"
-    class="relative w-full overflow-hidden h-[80vh] sm:h-[60vh] md:h-[60vh] lg:h-[85vh] {{ $section_data['class'] ?? '' }}">
+    class="relative w-full overflow-hidden h-[80vh] md:h-[90vh] {{ $section_data['class'] ?? '' }}">
 
     <div class="absolute inset-0 z-0">
         <img src="{{ $section_data['background']['link'] ?? '' }}"

@@ -40,7 +40,7 @@
 
         {{-- ══ COL 1 — LOGO ══ --}}
         <a href="{{ route('landing.index') }}"
-           class="tbg-logo font-heading font-normal text-2xl transition-colors duration-300
+           class="tbg-logo font-heading font-normal text-lg xl:text-2xl transition-colors duration-300
                   {{ $tripNavbar ? 'text-[var(--color-heading-text)]' : 'text-white' }}"
            aria-label="{{ config('app.name') }} — home">
             {{ config('app.name') }}

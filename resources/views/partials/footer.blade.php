@@ -90,7 +90,7 @@
         </div>
         <div class="pt-8 flex flex-col sm:flex-row items-center justify-center gap-1">
             <p class="text-white/50 text-[13px] text-center">
-                © {{ date('Y') }} {{ config('app.name') }}. All Rights Reserved.
+                © {{ date('Y') }} {{ config('app.name') }}. Design and Maintained by BOOKNPAY.
             </p>
         </div>
     </div>

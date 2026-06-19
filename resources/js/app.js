@@ -255,38 +255,41 @@ import './bootstrap';
         }
     });
 
-    // ── Trip navbar: search logic ───────────────────────────────────────────
+    // ── Trip navbar: search logic (desktop + mobile) ────────────────────────
     if (isTripNavbar) {
-        const searchInput   = document.getElementById('tbg-search-input');
-        const searchResults = document.getElementById('tbg-search-results');
-        const searchClear   = document.getElementById('tbg-search-clear');
-        const searchEmpty   = document.getElementById('tbg-search-empty');
-        const searchWrap    = document.getElementById('tbg-search-wrap');
-        const resultGroups  = document.querySelectorAll('.tbg-result-group');
+        const TRIP_URL = '/trip';
 
-        if (searchInput && searchResults) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlQ      = urlParams.get('q') ?? '';
 
-            const TRIP_URL = '/trip';
+        /**
+         * Membuat instance search yang reusable, dipakai untuk desktop & mobile.
+         * Setiap instance independen: filter, clear, submit, dan open/close
+         * panel masing-masing tidak saling mengganggu.
+         */
+        function createSearchInstance({
+            input,
+            clearBtn,
+            emptyEl,
+            itemSelector,
+            groupSelector,
+            onOpen,
+            onClose,
+        }) {
+            if (!input) return null;
 
-            const openSearch  = () => searchResults.classList.add('tbg-search-open');
-            const closeSearch = () => searchResults.classList.remove('tbg-search-open');
-
-            const urlParams = new URLSearchParams(window.location.search);
-            const urlQ      = urlParams.get('q') ?? '';
-            if (urlQ) {
-                searchInput.value = urlQ;
-                searchClear?.classList.remove('hidden');
-            }
+            const groups = document.querySelectorAll(groupSelector);
 
             function filterResults(q) {
                 let total = 0;
-                resultGroups.forEach(group => {
-                    const items = group.querySelectorAll('.tbg-result-item');
+                groups.forEach(group => {
+                    const items = group.querySelectorAll(itemSelector);
                     let visible = 0;
                     items.forEach(item => {
                         const title   = (item.dataset.searchTitle   ?? '').toLowerCase();
                         const excerpt = (item.dataset.searchExcerpt ?? '').toLowerCase();
-                        const match   = q === '' || title.includes(q) || excerpt.includes(q);
+                        const tags    = (item.dataset.searchTags    ?? '').toLowerCase();
+                        const match   = q === '' || title.includes(q) || excerpt.includes(q) || tags.includes(q);
                         item.style.display = match ? '' : 'none';
                         if (match) visible++;
                     });
@@ -294,8 +297,8 @@ import './bootstrap';
                     total += visible;
                 });
 
-                if (searchEmpty) {
-                    searchEmpty.classList.toggle('hidden', total > 0 || q === '');
+                if (emptyEl) {
+                    emptyEl.classList.toggle('hidden', total > 0 || q === '');
                 }
             }
 
@@ -307,32 +310,37 @@ import './bootstrap';
                 window.location.href = TRIP_URL + '?' + params.toString();
             }
 
-            searchInput.addEventListener('focus', () => {
-                filterResults(searchInput.value.trim().toLowerCase());
-                openSearch();
+            if (urlQ) {
+                input.value = urlQ;
+                clearBtn?.classList.remove('hidden');
+            }
+
+            input.addEventListener('focus', () => {
+                filterResults(input.value.trim().toLowerCase());
+                onOpen?.();
             });
 
-            searchInput.addEventListener('input', () => {
-                const q = searchInput.value.trim().toLowerCase();
-                searchClear?.classList.toggle('hidden', q === '');
+            input.addEventListener('input', () => {
+                const q = input.value.trim().toLowerCase();
+                clearBtn?.classList.toggle('hidden', q === '');
                 filterResults(q);
-                openSearch();
+                onOpen?.();
             });
 
-            searchInput.addEventListener('keydown', e => {
+            input.addEventListener('keydown', e => {
                 if (e.key === 'Enter') {
                     e.preventDefault();
-                    closeSearch();
-                    submitSearch(searchInput.value.trim());
+                    onClose?.();
+                    submitSearch(input.value.trim());
                 }
-                if (e.key === 'Escape') closeSearch();
+                if (e.key === 'Escape') onClose?.();
             });
 
-            searchClear?.addEventListener('click', () => {
-                searchInput.value = '';
-                searchClear.classList.add('hidden');
+            clearBtn?.addEventListener('click', () => {
+                input.value = '';
+                clearBtn.classList.add('hidden');
                 filterResults('');
-                searchInput.focus();
+                input.focus();
 
                 const params = new URLSearchParams(window.location.search);
                 if (params.has('q')) {
@@ -342,16 +350,83 @@ import './bootstrap';
                 }
             });
 
-            document.addEventListener('click', e => {
-                if (!searchWrap?.contains(e.target)) closeSearch();
-            });
-
-            document.addEventListener('keydown', e => {
-                if (e.key === 'Escape') closeSearch();
-            });
-
             filterResults(urlQ.toLowerCase());
+
+            return { filterResults };
         }
+
+        // ── Desktop instance ─────────────────────────────────────────────────
+        const searchWrap = document.getElementById('tbg-search-wrap');
+
+        createSearchInstance({
+            input:         document.getElementById('tbg-search-input'),
+            clearBtn:      document.getElementById('tbg-search-clear'),
+            emptyEl:       document.getElementById('tbg-search-empty'),
+            itemSelector:  '.tbg-result-item',
+            groupSelector: '.tbg-result-group',
+            onOpen:  () => document.getElementById('tbg-search-results')?.classList.add('tbg-search-open'),
+            onClose: () => document.getElementById('tbg-search-results')?.classList.remove('tbg-search-open'),
+        });
+
+        document.addEventListener('click', e => {
+            if (!searchWrap?.contains(e.target)) {
+                document.getElementById('tbg-search-results')?.classList.remove('tbg-search-open');
+            }
+        });
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                document.getElementById('tbg-search-results')?.classList.remove('tbg-search-open');
+            }
+        });
+
+        // ── Mobile instance ──────────────────────────────────────────────────
+        const searchIconBtn   = document.getElementById('tbg-search-icon-btn');
+        const searchPanel     = document.getElementById('tbg-search-panel-mobile');
+        const searchInputMob  = document.getElementById('tbg-search-input-mobile');
+
+        function openMobilePanel() {
+            if (!searchPanel) return;
+            searchPanel.classList.add('tbg-search-panel-open');
+            searchIconBtn?.setAttribute('aria-expanded', 'true');
+            // Beri waktu transisi sebelum fokus, supaya keyboard tidak "loncat"
+            requestAnimationFrame(() => searchInputMob?.focus());
+        }
+
+        function closeMobilePanel() {
+            if (!searchPanel) return;
+            searchPanel.classList.remove('tbg-search-panel-open');
+            searchIconBtn?.setAttribute('aria-expanded', 'false');
+        }
+
+        searchIconBtn?.addEventListener('click', () => {
+            const isOpen = searchPanel?.classList.contains('tbg-search-panel-open');
+            isOpen ? closeMobilePanel() : openMobilePanel();
+        });
+
+        createSearchInstance({
+            input:         searchInputMob,
+            clearBtn:      document.getElementById('tbg-search-clear-mobile'),
+            emptyEl:       document.getElementById('tbg-search-empty-mobile'),
+            itemSelector:  '.tbg-result-item-mobile',
+            groupSelector: '.tbg-result-group-mobile',
+            // Panel mobile sudah terbuka manual lewat tombol; input fokus tidak
+            // perlu membuka apa-apa lagi, jadi onOpen/onClose dikosongkan.
+            onOpen:  null,
+            onClose: closeMobilePanel,
+        });
+
+        // Tutup panel mobile saat klik di luar panel & tombol toggle-nya
+        document.addEventListener('click', e => {
+            if (!searchPanel) return;
+            const clickedInsidePanel = searchPanel.contains(e.target);
+            const clickedToggleBtn   = searchIconBtn?.contains(e.target);
+            if (!clickedInsidePanel && !clickedToggleBtn) closeMobilePanel();
+        });
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') closeMobilePanel();
+        });
     }
 
 })();
