@@ -791,18 +791,17 @@
                         </h2>
                     </div>
                     @foreach($secondaryNav as $sec)
-                    <a href="{{ $sec['link'] }}"
-                       class="group flex items-center gap-2.5
-                              py-3.5 border-b border-[var(--color-border)]
-                              font-sans text-sm font-medium text-[var(--color-heading-text)]
-                              hover:text-[var(--color-accent)] hover:pl-1.5 transition-all duration-200">
-                        <i class="ti {{ $sec['icon'] }} text-[var(--color-body-text)]
-                                  group-hover:text-[var(--color-accent)] text-base transition-colors duration-200"
-                           aria-hidden="true"></i>
-                        {{ $sec['label'] }}
-                    </a>
+                        <a href="{{ route($sec['route']) }}"
+                        class="group flex items-center gap-2.5
+                                py-3.5 border-b border-[var(--color-border)]
+                                font-sans text-sm font-medium text-[var(--color-heading-text)]
+                                hover:text-[var(--color-accent)] hover:pl-1.5 transition-all duration-200">
+                            <i class="ti {{ $sec['icon'] }} text-[var(--color-body-text)]
+                                    group-hover:text-[var(--color-accent)] text-base transition-colors duration-200"
+                            aria-hidden="true"></i>
+                            {{ $sec['label'] }}
+                        </a>
                     @endforeach
-
                     <div class="flex items-center gap-5 mt-6 pb-8 md:pb-0">
                         <a href="{{ config('social.instagram.url') }}" target="_blank" rel="noopener"
                            class="text-[var(--color-body-text)] hover:text-[var(--color-accent)] text-xl transition-colors"

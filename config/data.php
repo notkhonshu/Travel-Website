@@ -6,10 +6,10 @@ return [
     ══════════════════════════════════════════ */
     'nav' => [
         'secondary' => [
-            ['label' => 'About Us', 'link' => '/about-us',   'icon' => 'ti-info-circle'],
-            ['label' => 'Trip',     'link' => '/trip',       'icon' => 'ti-map-2'],
-            ['label' => 'Gallery',  'link' => '/gallery',    'icon' => 'ti-photo'],
-            ['label' => 'Contact',  'link' => '/contact-us', 'icon' => 'ti-phone'],
+            ['label' => 'About Us', 'route' => 'landing.about',   'icon' => 'ti-info-circle'],
+            ['label' => 'Trip',     'route' => 'trip.index',    'icon' => 'ti-map-2'],
+            ['label' => 'Gallery',  'route' => 'gallery.index', 'icon' => 'ti-photo'],
+            ['label' => 'Contact',  'route' => 'landing.contact', 'icon' => 'ti-phone'],
         ],
     ],
 
