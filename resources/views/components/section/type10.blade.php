@@ -5,10 +5,10 @@
 <section id="gallery" class="py-20 sm:py-12">
     <div class="max-w-7xl mx-auto px-8 sm:px-4">
         <div class="flex items-baseline justify-between mb-9 pb-5 border-b border-black/8">
-            <span class="text-[11px] tracking-[0.18em] uppercase text-[#888] font-normal">
+            <span class="text-[11px] tracking-[0.18em] uppercase text-dark/50 font-normal">
                 Our Collection
             </span>
-            <p class="text-[12px] tracking-[0.06em] text-[#aaa] m-0">
+            <p class="text-[12px] tracking-[0.06em] text-dark/50 m-0">
                 {{ $images->count() }} {{ Str::plural('Photo', $images->count()) }}
             </p>
         </div>

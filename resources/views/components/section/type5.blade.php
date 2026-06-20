@@ -18,7 +18,7 @@
             <h2 class="font-heading font-bold text-2xl sm:text-3xl md:text-4xl text-[var(--color-heading-text)] leading-tight">
                 {!! $section_data['title'] !!}
             </h2>
-            <p class="mt-2 sm:mt-3 font-sans text-sm text-[var(--color-body-text)] leading-relaxed">
+            <p class="mt-2 sm:mt-3 font-sans text-sm text-[var(--color-body-text)] leading-relaxed text-justify">
                 {{ $section_data['description'] }}
             </p>
         </div>
@@ -44,11 +44,17 @@
             </button>
         </div>
     </div>
-    <div class="max-w-7xl mx-auto">
+
+    {{-- Wrapper diberi padding-left agar card pertama tidak nempel/kepotong
+         di tepi layar, dan overflow-x hanya disembunyikan di sini, bukan
+         di parent, supaya pengukuran lebar card selalu konsisten. --}}
+    <div class="pl-4 sm:pl-0 sm:max-w-7xl sm:mx-auto">
         <div id="{{ $sectionId }}_track_wrap" class="overflow-hidden">
-            <div id="{{ $sectionId }}_track" class="flex gap-3 sm:gap-4 md:gap-5 will-change-transform">
+            <div id="{{ $sectionId }}_track" class="flex gap-4 sm:gap-4 md:gap-5 will-change-transform">
                 @foreach($allItems as $item)
-                <div class="{{ $cardClass }} shrink-0 w-[220px] sm:w-[260px] md:w-[300px]">
+                <div class="{{ $cardClass }} shrink-0
+                            w-[calc(100vw-4.5rem)]
+                            sm:w-[260px] md:w-[300px]">
                     @include('components.section.type4', [
                         'section_data' => [
                             'image'      => asset($item['image']),

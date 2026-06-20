@@ -6,14 +6,14 @@
             <div class="flex flex-col gap-10">
                 <div>
                     <p class="font-sans text-[11px] font-semibold tracking-[0.2em] uppercase
-                               text-primary mb-3">
+                               text-accent mb-3">
                         Contact Us
                     </p>
                     <h1 class="font-heading font-bold text-3xl sm:text-4xl md:text-5xl
                                 text-[var(--color-heading-text)] leading-tight mb-4">
                         Let's plan your<br>next adventure
                     </h1>
-                    <p class="font-sans text-[15px] text-[var(--color-body-text)] leading-relaxed">
+                    <p class="font-sans text-[15px] text-[var(--color-body-text)] leading-relaxed text-justify md:text-left">
                         Have a question about our trips or want a custom itinerary?
                         Our team is ready to help you every step of the way.
                     </p>

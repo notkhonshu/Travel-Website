@@ -24,7 +24,7 @@
                                text-accent mb-2 sm:mb-3">
                         Our Vision
                     </p>
-                    <p class="font-sans text-sm text-[var(--color-body-text)] leading-relaxed">
+                    <p class="font-sans text-sm text-[var(--color-body-text)] leading-relaxed text-justify md:text-left">
                         {{ $section_data['vision'] ?? '' }}
                     </p>
                 </div>

@@ -23,15 +23,15 @@
                    leading-snug line-clamp-2">
             {{ $title }}
         </h3>
-        <p class="font-sans text-[11px] sm:text-xs text-[var(--color-body-text)]/60
+        <p class="font-sans text-[11px] sm:text-xs text-[var(--color-body-text)]
                   leading-relaxed line-clamp-1 sm:line-clamp-2 flex-1">
             {{ $excerpt }}
         </p>
         <div class="flex flex-col items-end gap-0.5 mt-1">
-            <span class="font-sans font-semibold text-[10px] sm:text-[11px] text-primary-dark/50">From</span>
+            <span class="font-sans font-semibold text-[10px] sm:text-[11px] text-primary-dark">From</span>
             <span class="font-sans font-bold text-sm sm:text-base text-accent">
                 Rp {{ number_format($price, 0, ',', '.') }}
-                <span class="font-normal text-[10px] sm:text-xs text-[var(--color-body-text)]/40">/{{ $price_unit }}</span>
+                <span class="font-normal text-[10px] sm:text-xs text-[var(--color-body-text)]/80">/{{ $price_unit }}</span>
             </span>
         </div>
 

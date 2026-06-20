@@ -454,7 +454,7 @@
             <button id="tbg-burger-btn"
                     class="tbg-burger
                         flex flex-col justify-center items-end gap-[6px]
-                        w-10 h-10 p-2
+                        w-12 h-10 p-2
                         bg-transparent border-none cursor-pointer
                         rounded-lg
                         transition-colors duration-200
@@ -462,10 +462,10 @@
                     aria-label="Toggle menu"
                     aria-expanded="false"
                     aria-controls="tbg-fullmenu">
-                <span class="tbg-bar-2 block h-[2.5px] w-6 rounded-sm
+                <span class="tbg-bar-2 block h-[2.5px] w-8 rounded-sm
                             transition-all duration-300
                             {{ $tripNavbar ? 'bg-[var(--color-heading-text)]' : 'bg-white' }}"></span>
-                <span class="tbg-bar-2 block h-[2px] w-6 rounded-sm
+                <span class="tbg-bar-2 block h-[2px] w-8 rounded-sm
                             transition-all duration-300
                             {{ $tripNavbar ? 'bg-[var(--color-heading-text)]' : 'bg-white' }}"></span>
             </button>
@@ -803,15 +803,15 @@
                         </a>
                     @endforeach
                     <div class="flex items-center gap-5 mt-6 pb-8 md:pb-0">
-                        <a href="{{ config('social.instagram.url') }}" target="_blank" rel="noopener"
-                           class="text-[var(--color-body-text)] hover:text-[var(--color-accent)] text-xl transition-colors"
-                           aria-label="Instagram">
-                            <i class="ti ti-brand-instagram"></i>
-                        </a>
                         <a href="{{ config('social.facebook.url') }}" target="_blank" rel="noopener"
                            class="text-[var(--color-body-text)] hover:text-[var(--color-accent)] text-xl transition-colors"
                            aria-label="Facebook">
                             <i class="ti ti-brand-facebook"></i>
+                        </a>
+                        <a href="{{ config('social.instagram.url') }}" target="_blank" rel="noopener"
+                           class="text-[var(--color-body-text)] hover:text-[var(--color-accent)] text-xl transition-colors"
+                           aria-label="Instagram">
+                            <i class="ti ti-brand-instagram"></i>
                         </a>
                     </div>
                 </div>

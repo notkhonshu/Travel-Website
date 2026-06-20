@@ -516,28 +516,68 @@ window.heroSearchSubmit = function (heroId, baseUrl) {
             return;
         }
 
-        let current     = 0;
-        let autoTimer   = null;
+        // ── True infinite carousel (DOM recycling, tanpa reset posisi) ──
+        // Berbeda dari versi sebelumnya: track TIDAK PERNAH snap-back ke
+        // tengah. translateX terus bertambah/berkurang selamanya. Begitu
+        // card paling depan/belakang sudah keluar viewport, card itu
+        // dipindah secara fisik ke ujung lain dan transform dikompensasi
+        // sebesar 1 card width — semuanya terjadi di luar pandangan user,
+        // jadi swipe kanan terasa terus maju selamanya, swipe kiri terus
+        // mundur selamanya.
+        //
+        // PENTING: dipakai SATU pointer absolut (bukan dua pointer maju/
+        // mundur terpisah). Dua pointer terpisah bisa saling "tabrakan"
+        // saat user bolak-balik swipe cepat, menyebabkan dua card dengan
+        // data sama muncul berdampingan. Satu pointer modulo menjamin
+        // urutan selalu 0,1,2,...,n,0,1,2,... rapi ke arah manapun.
+
+        let pointer     = 0;     // posisi absolut, boleh negatif/positif tanpa batas
+        let offsetSteps = 0;     // total langkah translateX dari posisi awal
         let isAnimating = false;
+        let autoTimer   = null;
 
         cards.forEach(c => track.insertBefore(c.cloneNode(true), track.firstChild));
         cards.forEach(c => track.appendChild(c.cloneNode(true)));
 
         const allCards = Array.from(track.querySelectorAll('.' + cardClass));
+        const sourceHTML = cards.map(c => c.innerHTML); // konten asli, dipakai untuk recycle berulang
+
+        function mod(n, m) { return ((n % m) + m) % m; }
 
         let cachedCardWidth = 0;
 
+        // Membaca gap aktual dari CSS (flex `gap`), bukan angka tetap.
+        // Penting karena gap berbeda di tiap breakpoint (gap-4 di mobile,
+        // gap-5 di desktop, dst) — kalau di-hardcode, slider akan geser
+        // dengan jarak yang meleset saat breakpoint gap berubah.
+        function getTrackGap() {
+            const style = getComputedStyle(track);
+            const gap   = parseFloat(style.columnGap || style.gap || '0');
+            return Number.isNaN(gap) ? 0 : gap;
+        }
+
         function measureCardWidth() {
-            cachedCardWidth = allCards[0].getBoundingClientRect().width + 20;
+            cachedCardWidth = allCards[0].getBoundingClientRect().width + getTrackGap();
+        }
+
+        function applyTransform(animate) {
+            track.style.transition = animate ? 'transform 500ms ease-in-out' : 'none';
+            track.style.transform  = `translateX(-${total * cachedCardWidth + offsetSteps * cachedCardWidth}px)`;
         }
 
         function initPosition() {
             measureCardWidth();
-            track.style.transition = 'none';
-            track.style.transform  = `translateX(-${total * cachedCardWidth}px)`;
+            applyTransform(false);
         }
 
         initPosition();
+
+        // Ukur ulang setelah layout benar-benar settle (font/gambar selesai
+        // load bisa mengubah lebar 1 frame setelah render pertama). Tanpa
+        // ini, posisi awal track bisa meleset sedikit dan card pertama
+        // terlihat "kepotong" sebagian di tepi kiri viewport.
+        requestAnimationFrame(initPosition);
+        window.addEventListener('load', initPosition, { once: true });
 
         let resizeTimer = null;
         window.addEventListener('resize', () => {
@@ -545,41 +585,93 @@ window.heroSearchSubmit = function (heroId, baseUrl) {
             resizeTimer = setTimeout(initPosition, 100);
         });
 
-        function goTo(index, animate = true) {
-            if (isAnimating) return;
-            isAnimating = true;
-            track.style.transition = animate ? 'transform 500ms ease-in-out' : 'none';
-            track.style.transform  = `translateX(-${(total + index) * cachedCardWidth}px)`;
-            current = index;
-            updateDots();
-            setTimeout(() => { isAnimating = false; }, animate ? 520 : 0);
-        }
-
-        track.addEventListener('transitionend', e => {
-            if (e.target !== track) return;
-            if (current < 0) { current = total - 1; goTo(current, false); }
-            else if (current >= total) { current = 0; goTo(current, false); }
-        });
-
         function updateDots() {
-            const realIdx = ((current % total) + total) % total;
+            const realIdx = mod(pointer - 1, total);
             dots.forEach((d, i) => {
                 d.classList.toggle('!w-4', i === realIdx);
                 d.classList.toggle('!bg-[var(--color-accent)]', i === realIdx);
             });
         }
 
+        // Bergerak satu langkah ke arah `dir` (1 = maju/kanan, -1 = mundur/kiri).
+        // Posisi translate TIDAK PERNAH direset — terus bertambah/berkurang.
+        function step(dir) {
+            if (isAnimating) return;
+            isAnimating = true;
+
+            offsetSteps += dir;
+            applyTransform(true);
+
+            setTimeout(() => {
+                if (dir > 0) {
+                    // Card paling depan (kiri) sudah keluar viewport → daur
+                    // ulang jadi card paling belakang (kanan). pointer naik
+                    // dulu, lalu index data = pointer - 1 (card yang baru
+                    // saja "masuk" dari kanan).
+                    pointer++;
+                    const idx = mod(pointer - 1, total);
+                    const firstEl = track.firstElementChild;
+                    firstEl.innerHTML = sourceHTML[idx];
+                    track.appendChild(firstEl);
+
+                    // Kompensasi: karena 1 elemen pindah dari depan ke
+                    // belakang, geser balik 1 card TANPA animasi supaya
+                    // posisi visual tidak berubah sama sekali.
+                    offsetSteps -= 1;
+                    applyTransform(false);
+                } else {
+                    // Card paling belakang (kanan) keluar viewport → daur
+                    // ulang jadi card paling depan (kiri). pointer turun
+                    // dulu, lalu index data = pointer (card yang baru saja
+                    // "masuk" dari kiri).
+                    pointer--;
+                    const idx = mod(pointer, total);
+                    const lastEl = track.lastElementChild;
+                    lastEl.innerHTML = sourceHTML[idx];
+                    track.insertBefore(lastEl, track.firstElementChild);
+
+                    offsetSteps += 1;
+                    applyTransform(false);
+                }
+
+                updateDots();
+                isAnimating = false;
+            }, 500);
+        }
+
+        function goNext() { step(1); }
+        function goPrev() { step(-1); }
+
+        updateDots();
+
+        // Dots tetap berfungsi sebagai navigasi cepat: klik dot mengarahkan
+        // carousel maju/mundur beberapa langkah menuju index yang diklik,
+        // tetap lewat jalur step() yang sama (tidak ada jump/reset posisi).
         dots.forEach(dot => {
             dot.addEventListener('click', () => {
-                goTo(parseInt(dot.dataset.pkgIndex, 10), true);
+                const targetIdx = parseInt(dot.dataset.pkgIndex, 10);
+                const realIdx   = mod(pointer - 1, total);
+                let diff        = targetIdx - realIdx;
+                if (diff > total / 2) diff -= total;
+                if (diff < -total / 2) diff += total;
+
+                let remaining = diff;
+                const runStep = () => {
+                    if (remaining === 0) return;
+                    const dir = remaining > 0 ? 1 : -1;
+                    step(dir);
+                    remaining -= dir;
+                    setTimeout(runStep, 520);
+                };
+                runStep();
                 resetAuto();
             });
         });
 
-        btnPrev?.addEventListener('click', () => { goTo(current - 1); resetAuto(); });
-        btnNext?.addEventListener('click', () => { goTo(current + 1); resetAuto(); });
+        btnPrev?.addEventListener('click', () => { goPrev(); resetAuto(); });
+        btnNext?.addEventListener('click', () => { goNext(); resetAuto(); });
 
-        function startAuto() { autoTimer = setInterval(() => goTo(current + 1), 4000); }
+        function startAuto() { autoTimer = setInterval(goNext, 4000); }
         function resetAuto() { clearInterval(autoTimer); startAuto(); }
 
         document.addEventListener('visibilitychange', () => {
@@ -598,10 +690,54 @@ window.heroSearchSubmit = function (heroId, baseUrl) {
             touchDeltaX = e.touches[0].clientX - touchStartX;
         }, { passive: true });
         wrap.addEventListener('touchend', () => {
-            if (Math.abs(touchDeltaX) > 50) goTo(touchDeltaX < 0 ? current + 1 : current - 1);
+            if (Math.abs(touchDeltaX) > 50) (touchDeltaX < 0 ? goNext() : goPrev());
             touchDeltaX = 0;
             startAuto();
         });
+
+        // ── Mouse drag (PC) ──────────────────────────────────────────────
+        // Behaviour sama persis dengan touch di atas: drag horizontal lebih
+        // dari 50px lanjut ke slide berikut/sebelumnya, lalu auto-play
+        // dilanjutkan. wrap.style.cursor diberi feedback visual saat drag.
+        let isMouseDown  = false;
+        let mouseStartX  = 0;
+        let mouseDeltaX  = 0;
+
+        wrap.addEventListener('mousedown', e => {
+            isMouseDown = true;
+            mouseStartX = e.clientX;
+            mouseDeltaX = 0;
+            clearInterval(autoTimer);
+            wrap.style.cursor = 'grabbing';
+            e.preventDefault(); // cegah drag-select gambar/teks
+        });
+
+        window.addEventListener('mousemove', e => {
+            if (!isMouseDown) return;
+            mouseDeltaX = e.clientX - mouseStartX;
+        });
+
+        window.addEventListener('mouseup', () => {
+            if (!isMouseDown) return;
+            isMouseDown = false;
+            wrap.style.cursor = 'grab';
+            if (Math.abs(mouseDeltaX) > 50) (mouseDeltaX < 0 ? goNext() : goPrev());
+            mouseDeltaX = 0;
+            startAuto();
+        });
+
+        // Kalau mouse keluar window saat masih drag (mis. lepas klik di luar
+        // viewport), tetap selesaikan drag supaya slider tidak "nyangkut".
+        window.addEventListener('mouseleave', () => {
+            if (!isMouseDown) return;
+            isMouseDown = false;
+            wrap.style.cursor = 'grab';
+            if (Math.abs(mouseDeltaX) > 50) (mouseDeltaX < 0 ? goNext() : goPrev());
+            mouseDeltaX = 0;
+            startAuto();
+        });
+
+        wrap.style.cursor = 'grab';
 
         updateDots();
         startAuto();
@@ -639,28 +775,61 @@ window.heroSearchSubmit = function (heroId, baseUrl) {
             return;
         }
 
-        let current     = 0;
-        let autoTimer   = null;
+        // ── True infinite carousel (DOM recycling, tanpa reset posisi) ──
+        // Sama persis dengan slider Packages: translateX terus bertambah/
+        // berkurang selamanya, tidak pernah snap-back. Card yang keluar
+        // viewport didaur ulang ke ujung lain dengan konten data berikutnya
+        // dalam rotasi, sehingga swipe kanan terasa terus maju selamanya
+        // dan swipe kiri terus mundur selamanya.
+        //
+        // Dipakai SATU pointer absolut (lihat catatan di slider Packages
+        // untuk alasan: dua pointer terpisah bisa tabrakan saat bolak-balik
+        // swipe cepat dan memunculkan dua card sama berdampingan).
+
+        let pointer     = 0;
+        let offsetSteps = 0;
         let isAnimating = false;
+        let autoTimer   = null;
 
         cards.forEach(c => track.insertBefore(c.cloneNode(true), track.firstChild));
         cards.forEach(c => track.appendChild(c.cloneNode(true)));
 
         const allCards = Array.from(track.querySelectorAll('.tbg-dest-card'));
+        const sourceHTML = cards.map(c => c.innerHTML);
+
+        function mod(n, m) { return ((n % m) + m) % m; }
 
         let cachedCardWidth = 0;
 
+        // Sama seperti slider Packages — gap dibaca dinamis dari CSS,
+        // bukan angka tetap, supaya akurat di semua breakpoint.
+        function getTrackGap() {
+            const style = getComputedStyle(track);
+            const gap   = parseFloat(style.columnGap || style.gap || '0');
+            return Number.isNaN(gap) ? 0 : gap;
+        }
+
         function measureCardWidth() {
-            cachedCardWidth = allCards[0].getBoundingClientRect().width + 20;
+            cachedCardWidth = allCards[0].getBoundingClientRect().width + getTrackGap();
+        }
+
+        function applyTransform(animate) {
+            track.style.transition = animate ? 'transform 500ms ease-in-out' : 'none';
+            track.style.transform  = `translateX(-${total * cachedCardWidth + offsetSteps * cachedCardWidth}px)`;
         }
 
         function initPosition() {
             measureCardWidth();
-            track.style.transition = 'none';
-            track.style.transform  = `translateX(-${total * cachedCardWidth}px)`;
+            applyTransform(false);
         }
 
         initPosition();
+
+        // Sama seperti slider Packages: ukur ulang setelah layout settle
+        // supaya posisi awal track tidak meleset dan card pertama tidak
+        // terlihat kepotong di tepi kiri.
+        requestAnimationFrame(initPosition);
+        window.addEventListener('load', initPosition, { once: true });
 
         let resizeTimer = null;
         window.addEventListener('resize', () => {
@@ -668,29 +837,8 @@ window.heroSearchSubmit = function (heroId, baseUrl) {
             resizeTimer = setTimeout(initPosition, 100);
         });
 
-        function goTo(index, animate = true) {
-            if (isAnimating) return;
-            isAnimating = true;
-            track.style.transition = animate ? 'transform 500ms ease-in-out' : 'none';
-            track.style.transform  = `translateX(-${(total + index) * cachedCardWidth}px)`;
-            current = index;
-            updateDots();
-            setTimeout(() => { isAnimating = false; }, animate ? 520 : 0);
-        }
-
-        track.addEventListener('transitionend', e => {
-            if (e.target !== track) return;
-            if (current < 0) {
-                current = total - 1;
-                goTo(current, false);
-            } else if (current >= total) {
-                current = 0;
-                goTo(current, false);
-            }
-        });
-
         function updateDots() {
-            const realIdx = ((current % total) + total) % total;
+            const realIdx = mod(pointer - 1, total);
             dots.forEach((d, i) => {
                 d.classList.toggle('!w-4',                      i === realIdx);
                 d.classList.toggle('!bg-[var(--color-accent)]', i === realIdx);
@@ -698,18 +846,71 @@ window.heroSearchSubmit = function (heroId, baseUrl) {
             });
         }
 
+        function step(dir) {
+            if (isAnimating) return;
+            isAnimating = true;
+
+            offsetSteps += dir;
+            applyTransform(true);
+
+            setTimeout(() => {
+                if (dir > 0) {
+                    pointer++;
+                    const idx = mod(pointer - 1, total);
+                    const firstEl = track.firstElementChild;
+                    firstEl.innerHTML = sourceHTML[idx];
+                    track.appendChild(firstEl);
+
+                    offsetSteps -= 1;
+                    applyTransform(false);
+                } else {
+                    pointer--;
+                    const idx = mod(pointer, total);
+                    const lastEl = track.lastElementChild;
+                    lastEl.innerHTML = sourceHTML[idx];
+                    track.insertBefore(lastEl, track.firstElementChild);
+
+                    offsetSteps += 1;
+                    applyTransform(false);
+                }
+
+                updateDots();
+                isAnimating = false;
+            }, 500);
+        }
+
+        function goNext() { step(1); }
+        function goPrev() { step(-1); }
+
+        updateDots();
+
+        // Dots tetap berfungsi sebagai navigasi cepat, lewat jalur step()
+        // yang sama — tidak ada jump/reset posisi transform.
         dots.forEach(dot => {
             dot.addEventListener('click', () => {
-                const idx = parseInt(dot.dataset.destIndex ?? '0', 10);
-                goTo(idx, true);
+                const targetIdx = parseInt(dot.dataset.destIndex ?? '0', 10);
+                const realIdx   = mod(pointer - 1, total);
+                let diff        = targetIdx - realIdx;
+                if (diff > total / 2) diff -= total;
+                if (diff < -total / 2) diff += total;
+
+                let remaining = diff;
+                const runStep = () => {
+                    if (remaining === 0) return;
+                    const dir = remaining > 0 ? 1 : -1;
+                    step(dir);
+                    remaining -= dir;
+                    setTimeout(runStep, 520);
+                };
+                runStep();
                 resetAuto();
             });
         });
 
-        btnPrev?.addEventListener('click', () => { goTo(current - 1); resetAuto(); });
-        btnNext?.addEventListener('click', () => { goTo(current + 1); resetAuto(); });
+        btnPrev?.addEventListener('click', () => { goPrev(); resetAuto(); });
+        btnNext?.addEventListener('click', () => { goNext(); resetAuto(); });
 
-        function startAuto() { autoTimer = setInterval(() => goTo(current + 1), 4000); }
+        function startAuto() { autoTimer = setInterval(goNext, 4000); }
         function resetAuto() { clearInterval(autoTimer); startAuto(); }
 
         document.addEventListener('visibilitychange', () => {
@@ -728,14 +929,52 @@ window.heroSearchSubmit = function (heroId, baseUrl) {
             touchDeltaX = e.touches[0].clientX - touchStartX;
         }, { passive: true });
         wrap.addEventListener('touchend', () => {
-            if (Math.abs(touchDeltaX) > 50) {
-                goTo(touchDeltaX < 0 ? current + 1 : current - 1);
-            }
+            if (Math.abs(touchDeltaX) > 50) (touchDeltaX < 0 ? goNext() : goPrev());
             touchDeltaX = 0;
             startAuto();
         });
 
-        updateDots();
+        // ── Mouse drag (PC) ──────────────────────────────────────────────
+        // Sama seperti slider Packages: drag horizontal > 50px memicu
+        // pindah slide, dan auto-play dilanjutkan setelah selesai drag.
+        let isMouseDown  = false;
+        let mouseStartX  = 0;
+        let mouseDeltaX  = 0;
+
+        wrap.addEventListener('mousedown', e => {
+            isMouseDown = true;
+            mouseStartX = e.clientX;
+            mouseDeltaX = 0;
+            clearInterval(autoTimer);
+            wrap.style.cursor = 'grabbing';
+            e.preventDefault();
+        });
+
+        window.addEventListener('mousemove', e => {
+            if (!isMouseDown) return;
+            mouseDeltaX = e.clientX - mouseStartX;
+        });
+
+        window.addEventListener('mouseup', () => {
+            if (!isMouseDown) return;
+            isMouseDown = false;
+            wrap.style.cursor = 'grab';
+            if (Math.abs(mouseDeltaX) > 50) (mouseDeltaX < 0 ? goNext() : goPrev());
+            mouseDeltaX = 0;
+            startAuto();
+        });
+
+        window.addEventListener('mouseleave', () => {
+            if (!isMouseDown) return;
+            isMouseDown = false;
+            wrap.style.cursor = 'grab';
+            if (Math.abs(mouseDeltaX) > 50) (mouseDeltaX < 0 ? goNext() : goPrev());
+            mouseDeltaX = 0;
+            startAuto();
+        });
+
+        wrap.style.cursor = 'grab';
+
         startAuto();
     });
 

@@ -20,7 +20,7 @@
             <h2 class="font-heading font-bold text-2xl sm:text-3xl md:text-4xl text-[var(--color-heading-text)] leading-tight">
                 {{ $section_data['title'] }}
             </h2>
-            <p class="mt-2 sm:mt-3 font-sans text-sm text-[var(--color-body-text)] leading-relaxed">
+            <p class="mt-2 sm:mt-3 font-sans text-sm text-[var(--color-body-text)] leading-relaxed text-justify">
                 {{ $section_data['description'] }}
             </p>
         </div>
