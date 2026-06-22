@@ -28,7 +28,6 @@ return [
             'highlight' => 'Mount Batur Sunrise',
             'packages'  => [
                 'mount-batur-dirt-bike-black-lava-black-sand-adventure-kintamani',
-                'kintamani-atv-black-sand-waterfall-adventure',
             ],
             'activities' => [],
         ],
@@ -41,9 +40,7 @@ return [
             'tag'       => 'Cultural',
             'link'      => '#',
             'highlight' => 'Tegallalang Rice Terraces',
-            'packages'  => [
-                'ubud-rice-terrace-temple-cultural-tour',
-            ],
+            'packages'  => [],
             'activities' => [
                 'bali-cycling-tour',
                 'white-water-rafting',
@@ -60,9 +57,7 @@ return [
             'tag'       => 'Water Sports',
             'link'      => '#',
             'highlight' => 'Kelingking Beach',
-            'packages'  => [
-                'nusa-penida-island-hopping-snorkeling-tour',
-            ],
+            'packages'  => [],
             'activities' => [
                 'snorkeling-diving',
             ],
@@ -76,9 +71,7 @@ return [
             'tag'       => 'Water Sports',
             'link'      => '#',
             'highlight' => 'Kuta Beach Sunset',
-            'packages'  => [
-                'kuta-sunset-horseback-riding-beach-tour',
-            ],
+            'packages'  => [],
             'activities' => [
                 'surfing-lessons',
             ],
@@ -149,6 +142,7 @@ return [
             'badge'       => 'Best Seller',
             'featured'    => true,
         ],
+<<<<<<< HEAD
         [
             'slug'        => 'kintamani-atv-black-sand-waterfall-adventure',
             'title'       => 'Bali: Kintamani ATV Ride, Black Sand Trail & Hidden Waterfall Adventure',
@@ -367,6 +361,8 @@ return [
             'badge'       => null,
             'featured'    => false,
         ],
+=======
+>>>>>>> origin/master
     ],
 
     /* ══════════════════════════════════════════
@@ -379,12 +375,15 @@ return [
             'excerpt'     => 'Ride through terraced rice fields, jungle paths, and traditional Balinese villages on a scenic guided bike tour.',
             'description' => 'Pedal through some of the most picturesque landscapes Bali has to offer. Starting from the highlands, your guide leads you downhill past rice terraces, spice gardens, and centuries-old village temples. Suitable for all fitness levels — no serious uphill required.',
             'image'       => 'https://images.unsplash.com/photo-1544191696-102dbdaeeaa0?w=800&q=80',
+<<<<<<< HEAD
             'gallery'     => [
                 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80',
                 'https://images.unsplash.com/photo-1558981359-219d6364c9c8?w=1200&q=80',
                 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1200&q=80',
                 'https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?w=1200&q=80',
             ],
+=======
+>>>>>>> origin/master
             'category'    => 'cycling',
             'destination' => 'ubud',
             'duration'    => '3–4 hours',
@@ -404,12 +403,15 @@ return [
             'excerpt'     => 'Navigate the thrilling rapids of the Ayung or Telaga Waja river through lush jungle gorges.',
             'description' => 'Strap on your helmet and paddle through class II–III rapids surrounded by towering canyon walls, tropical jungle, and hidden waterfalls. Guided by certified rafting professionals, this is an experience the whole family can enjoy safely.',
             'image'       => 'https://images.unsplash.com/photo-1530866495561-507c9faab2ed?w=800&q=80',
+<<<<<<< HEAD
             'gallery'     => [
                 'https://images.unsplash.com/photo-1504276048855-f3d60e69632f?w=1200&q=80',
                 'https://images.unsplash.com/photo-1519046904884-53103b34b206?w=1200&q=80',
                 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=80',
                 'https://images.unsplash.com/photo-1542224566-6e85f2e6772f?w=1200&q=80',
             ],
+=======
+>>>>>>> origin/master
             'category'    => 'water-sports',
             'destination' => 'ubud',
             'duration'    => '2–3 hours',
@@ -429,6 +431,7 @@ return [
             'excerpt'     => 'Discover vibrant coral reefs and rich marine life in the crystal-clear waters around Bali and Nusa Penida.',
             'description' => 'Bali\'s underwater world is teeming with life — from colourful reef fish and sea turtles to manta rays and the famous USAT Liberty wreck in Amed. Choose from beginner snorkel trips or guided fun dives at some of the island\'s best sites.',
             'image'       => 'https://images.unsplash.com/photo-1560275619-4cc5fa59d3ae?w=800&q=80',
+<<<<<<< HEAD
             'gallery'     => [
                 'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?w=1200&q=80',
                 'https://images.unsplash.com/photo-1530541930197-ff16ac917b0e?w=1200&q=80',
@@ -436,6 +439,8 @@ return [
                 'https://images.unsplash.com/photo-1559494007-9f5847c49d94?w=1200&q=80',
                 'https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?w=1200&q=80',
             ],
+=======
+>>>>>>> origin/master
             'category'    => 'water-sports',
             'destination' => 'nusa-penida',
             'duration'    => '4–5 hours',
@@ -455,12 +460,15 @@ return [
             'excerpt'     => 'Tear through off-road jungle trails, river crossings, and village paths on a powerful quad bike.',
             'description' => 'No experience necessary. After a full safety briefing, follow your guide through muddy jungle tracks, splash across river crossings, and wind past rice paddies on an ATV built for Bali\'s rugged backcountry. Pure adrenaline from start to finish.',
             'image'       => 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=800&q=80',
+<<<<<<< HEAD
             'gallery'     => [
                 'https://images.unsplash.com/photo-1597176116047-876a32798fcc?w=1200&q=80',
                 'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?w=1200&q=80',
                 'https://images.unsplash.com/photo-1504276048855-f3d60e69632f?w=1200&q=80',
                 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=80',
             ],
+=======
+>>>>>>> origin/master
             'category'    => 'adventure',
             'destination' => 'ubud',
             'duration'    => '2 hours',
@@ -480,12 +488,15 @@ return [
             'excerpt'     => 'Learn to ride the waves with expert coaches on Bali\'s most beginner-friendly breaks.',
             'description' => 'Bali is one of the world\'s great surfing destinations, and Kuta and Seminyak beaches offer the perfect gentle waves for first-timers. Your ISA-certified instructor will have you standing up and riding within the first session, regardless of experience.',
             'image'       => 'https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=800&q=80',
+<<<<<<< HEAD
             'gallery'     => [
                 'https://images.unsplash.com/photo-1455264745730-cb3b76250081?w=1200&q=80',
                 'https://images.unsplash.com/photo-1531722569936-825d4ecc1ca9?w=1200&q=80',
                 'https://images.unsplash.com/photo-1504109586057-7a2ae83d1338?w=1200&q=80',
                 'https://images.unsplash.com/photo-1519451241324-20b4ea2c4220?w=1200&q=80',
             ],
+=======
+>>>>>>> origin/master
             'category'    => 'water-sports',
             'destination' => 'kuta',
             'duration'    => '2 hours',
@@ -505,12 +516,15 @@ return [
             'excerpt'     => 'Start your morning with a sunrise yoga flow or a guided meditation session in a lush jungle setting.',
             'description' => 'Bali\'s spiritual energy makes it one of the world\'s most sought-after yoga destinations. Join a small-group morning flow in an open-air jungle shala, or settle into a guided silent meditation beside a river or rice field. All levels welcome.',
             'image'       => 'https://images.unsplash.com/photo-1545389336-cf090694435e?w=800&q=80',
+<<<<<<< HEAD
             'gallery'     => [
                 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1200&q=80',
                 'https://images.unsplash.com/photo-1593811167562-9cef47bfc4d7?w=1200&q=80',
                 'https://images.unsplash.com/photo-1588286840104-8957b019727f?w=1200&q=80',
                 'https://images.unsplash.com/photo-1552196563-55cd4e45efb3?w=1200&q=80',
             ],
+=======
+>>>>>>> origin/master
             'category'    => 'wellness',
             'destination' => 'ubud',
             'duration'    => '1.5–2 hours',

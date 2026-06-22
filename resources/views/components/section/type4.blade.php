@@ -8,15 +8,9 @@
 ])
 
 <a href="{{ $link }}"
-   class="group flex flex-col rounded-[var(--radius-lg)] overflow-hidden
-          bg-white border border-[var(--color-border,#e5e7eb)]
-          hover:shadow-lg transition-shadow duration-200">
-
-    <div class="overflow-hidden aspect-[4/3]">
-        <img src="{{ $image }}"
-             alt="{{ $title }}"
-             class="w-full h-full object-cover
-                    group-hover:scale-[1.04] transition-transform duration-350">
+   class="group flex flex-col rounded-[var(--radius-lg)] overflow-hidden bg-white border border-[var(--color-border,#e5e7eb)] hover:shadow-lg transition-shadow duration-200">
+    <div class="overflow-hidden h-40 sm:h-44 md:h-48">
+        <img src="{{ $image }}" alt="{{ $title }}" class="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-350">
     </div>
     <div class="flex flex-col flex-1 px-2.5 sm:px-3 md:px-4 pt-2 sm:pt-2.5 md:pt-3 pb-3 sm:pb-3.5 md:pb-4 gap-1.5 sm:gap-2">
         <h3 class="font-sans font-semibold text-xs sm:text-sm text-[var(--color-heading-text)]
@@ -34,6 +28,5 @@
                 <span class="font-normal text-[10px] sm:text-xs text-[var(--color-body-text)]/80">/{{ $price_unit }}</span>
             </span>
         </div>
-
     </div>
 </a>

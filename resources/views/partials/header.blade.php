@@ -1,17 +1,11 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
-        @php
-            $ogImage = isset($data['metadata']['og-image'])
-                ? (str_starts_with($data['metadata']['og-image'], 'http')
-                    ? $data['metadata']['og-image']
-                    : asset($data['metadata']['og-image']))
-                : asset('assets/img/metadata/featured_image/image.jpg');
-        @endphp
-
+        {{-- Meta --}}
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
+        {{-- Meta Name --}}
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description"
             content="{{ isset($data['metadata']['description']) ? strip_tags($data['metadata']['description']) : config('metadata.description') }}">
@@ -21,11 +15,12 @@
         <meta name="author" content="The Bali Guides Adventure">
         <meta name="csrf-token" content="{{ csrf_token() }}" />
 
+        {{-- Meta Property OG --}}
         <meta property="og:title"
             content="{{ isset($data['metadata']['og-title']) ? $data['metadata']['og-title'] : config('metadata.og-title') }}">
         <meta property="og:description"
             content="{{ isset($data['metadata']['og-description']) ? strip_tags($data['metadata']['og-description']) : config('metadata.og-description') }}">
-        <meta property="og:image" content="{{ $ogImage }}">
+        <meta property="og:image" content="{{ asset('assets/img/metadata/featured_image/image.jpg') }}">
         <meta property="og:image:width" content="1200">
         <meta property="og:image:height" content="630">
         <meta property="og:image:alt"
@@ -55,26 +50,34 @@
         <meta property="og:street-address"
             content="{{ isset($data['metadata']['og-street-address']) ? $data['metadata']['og-street-address'] : config('social.address.name') }}">
 
+        {{-- Twitter Card --}}
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:title"
             content="{{ isset($data['metadata']['og-title']) ? $data['metadata']['og-title'] : config('metadata.og-title') }}">
         <meta name="twitter:description"
             content="{{ isset($data['metadata']['og-description']) ? strip_tags($data['metadata']['og-description']) : config('metadata.og-description') }}">
-        <meta name="twitter:image" content="{{ $ogImage }}">
+        <meta name="twitter:image" content="{{ asset('assets/img/metadata/featured_image/image.jpg') }}">
         <meta name="twitter:site" content="@{{ config('social.twitter.name') }}">
 
+        {{-- Title --}}
         <title>
             {{ isset($data['metadata']['title']) ? $data['metadata']['title'] : config('metadata.title') }}
         </title>
 
-        <link rel="canonical" href="{{ url(request()->path()) }}" />
+        {{-- Canonical --}}
+        <link rel="canonical" href="{{ url()->current() }}" />
         <link rel="shortcut icon" href="{{ asset('assets/img/metadata/favicon/ico.ico') }}" type="image/x-icon">
         <link rel="apple-touch-icon" href="{{ asset('assets/img/metadata/favicon/apple-touch-icon.png') }}">
 
+        {{-- Vite --}}
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-
+        
+        {{-- Tabler Icons --}}
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
+        {{-- JSON-LD Structured Data --}}
         <?php
             $jsonLd = [
                 '@context'    => 'https://schema.org',

@@ -110,7 +110,7 @@
                                              text-[var(--color-secondary)] text-[17px] mt-0.5
                                              group-hover:bg-[var(--color-primary)]/14
                                              transition-colors">
-                                    <i class="ti {{ $pkg['icon'] ?? 'ti-package' }} text-accent" aria-hidden="true"></i>
+                                    <i class="ti {{ $pkg['icon'] ?? 'ti-package' }}" aria-hidden="true"></i>
                                 </span>
                                 <span class="flex flex-col gap-0.5 min-w-0 overflow-hidden">
                                     <span class="font-sans text-[13.5px] font-medium
@@ -150,7 +150,7 @@
                                              text-[var(--color-secondary)] text-[17px] mt-0.5
                                              group-hover:bg-[var(--color-primary)]/14
                                              transition-colors">
-                                    <i class="ti {{ $act['icon'] ?? 'ti-bolt' }} text-accent" aria-hidden="true"></i>
+                                    <i class="ti {{ $act['icon'] ?? 'ti-bolt' }}" aria-hidden="true"></i>
                                 </span>
                                 <span class="flex flex-col gap-0.5 min-w-0 overflow-hidden">
                                     <span class="font-sans text-[13.5px] font-medium
@@ -244,7 +244,7 @@
                                          text-[var(--color-secondary)] text-[17px] mt-0.5
                                          group-hover:bg-[var(--color-primary)]/14
                                          transition-colors">
-                                <i class="ti ti-map-pin text-accent" aria-hidden="true"></i>
+                                <i class="ti ti-map-pin" aria-hidden="true"></i>
                             </span>
                             <span class="flex flex-col gap-0.5 min-w-0 overflow-hidden">
                                 <span class="font-sans text-[13.5px] font-medium
