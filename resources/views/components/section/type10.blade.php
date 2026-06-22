@@ -14,6 +14,7 @@
         </div>
 
         @if($images->isNotEmpty())
+            {{-- Masonry Grid --}}
             <div class="gap-[10px] lg:columns-4 sm:columns-2 sm:gap-[6px]" id="tbgGrid">
                 @foreach($images as $index => $image)
                     <button
@@ -47,8 +48,7 @@
 
 {{-- Lightbox --}}
 <div
-    class="fixed inset-0 z-[9999] flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-[280ms] ease-in-out motion-reduce:transition-none
-           [&.opacity-100]:pointer-events-auto"
+    class="fixed inset-0 z-[9999] flex items-center justify-center opacity-0 transition-opacity duration-[280ms] ease-in-out motion-reduce:transition-none"
     id="tbgLb"
     role="dialog"
     aria-modal="true"
