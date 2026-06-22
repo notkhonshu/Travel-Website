@@ -824,10 +824,6 @@ window.heroSearchSubmit = function (heroId, baseUrl) {
         }
 
         initPosition();
-
-        // Sama seperti slider Packages: ukur ulang setelah layout settle
-        // supaya posisi awal track tidak meleset dan card pertama tidak
-        // terlihat kepotong di tepi kiri.
         requestAnimationFrame(initPosition);
         window.addEventListener('load', initPosition, { once: true });
 
@@ -884,8 +880,6 @@ window.heroSearchSubmit = function (heroId, baseUrl) {
 
         updateDots();
 
-        // Dots tetap berfungsi sebagai navigasi cepat, lewat jalur step()
-        // yang sama — tidak ada jump/reset posisi transform.
         dots.forEach(dot => {
             dot.addEventListener('click', () => {
                 const targetIdx = parseInt(dot.dataset.destIndex ?? '0', 10);
@@ -985,8 +979,6 @@ window.heroSearchSubmit = function (heroId, baseUrl) {
    ══════════════════════════════════════════ */
 (function () {
     'use strict';
-
-    // Selector: semua button di dalam #tbgGrid (Blade baru tidak pakai .tbg-gal-item)
     const grid  = document.getElementById('tbgGrid');
     if (!grid) return;
 
@@ -1034,10 +1026,6 @@ window.heroSearchSubmit = function (heroId, baseUrl) {
             el.classList.add('opacity-100', 'translate-y-0');
         });
     }
-
-    // ── Lightbox ────────────────────────────────────────────────────────────
-    // Blade baru: open  → lb.classList.add('opacity-100')    (lb mulai opacity-0)
-    //             close → lb.classList.remove('opacity-100')
 
     function openLb(index) {
         current = ((index % items.length) + items.length) % items.length;
