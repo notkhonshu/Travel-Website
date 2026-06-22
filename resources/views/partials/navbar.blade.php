@@ -46,13 +46,11 @@
             {{ config('app.name') }}
         </a>
 
-        {{-- ══ COL 2 — DEFAULT: MAIN NAV | TRIP: SEARCHBAR (hidden di bawah md) ══ --}}
+        {{-- ══ COL 2 — DEFAULT: MAIN NAV | TRIP: SEARCHBAR ══ --}}
         @if(!$tripNavbar)
 
-        {{-- DEFAULT NAV — hanya tampil di md ke atas --}}
         <div class="hidden md:flex items-center justify-center gap-0.5" role="list">
 
-            {{-- ── Dropdown: Trip (Packages + Activities) ── --}}
             @if($hasTrip)
             <div class="tbg-menu-item relative" role="listitem">
                 <button class="tbg-menu-trigger tbg-nav-text
@@ -192,7 +190,6 @@
             </div>
             @endif
 
-            {{-- ── Dropdown: Destinations ── --}}
             @if($hasDest)
             <div class="tbg-menu-item relative" role="listitem">
                 <button class="tbg-menu-trigger tbg-nav-text
@@ -283,7 +280,7 @@
 
         @else
 
-        {{-- TRIP SEARCHBAR — hanya tampil di md ke atas --}}
+        {{-- TRIP SEARCHBAR — desktop --}}
         <div class="relative w-full hidden md:block" id="tbg-search-wrap">
             <div class="flex items-center gap-2
                         bg-[var(--color-surface)] border border-[var(--color-border)]
@@ -433,7 +430,7 @@
             </div>
         </div>
 
-        {{-- SEARCH ICON — hanya tampil di bawah md, sebagai pengganti searchbar --}}
+        {{-- SEARCH ICON — mobile --}}
         <div class="flex md:hidden items-center justify-center">
             <button id="tbg-search-icon-btn"
                     class="flex items-center justify-center w-10 h-10 rounded-lg
@@ -474,7 +471,7 @@
     </nav>
 
     {{-- ═══════════════════════════════════════════
-         SEARCH PANEL MOBILE — slide down, trip navbar only
+         SEARCH PANEL MOBILE
          ═══════════════════════════════════════════ --}}
     @if($tripNavbar)
     <div id="tbg-search-panel-mobile"
@@ -483,12 +480,9 @@
                 bg-[var(--color-background)]
                 border-b border-[var(--color-border)]
                 shadow-[var(--shadow-card-hover)]
-                opacity-0 pointer-events-none -translate-y-2
                 transition-all duration-200 ease-in-out
-                [&.tbg-search-panel-open]:opacity-100
-                [&.tbg-search-panel-open]:pointer-events-auto
-                [&.tbg-search-panel-open]:translate-y-0
-                z-40">
+                z-40"
+         style="opacity:0; pointer-events:none; transform:translateY(-8px);">
 
         <div class="px-4 py-3">
             <div class="flex items-center gap-2
@@ -754,6 +748,7 @@
                 @endif
             </div>
             @endif
+
             <div class="flex flex-col gap-10">
                 @if($destinationsFullmenu->isNotEmpty())
                 <div>

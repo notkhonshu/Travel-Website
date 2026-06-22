@@ -6,6 +6,12 @@
     $cardClass = 'tbg-' . $sectionId . '-card';
 @endphp
 
+<style>
+    .{{ $cardClass }} { width: 200px; }
+    @media (min-width: 640px) { .{{ $cardClass }} { width: 260px; } }
+    @media (min-width: 768px) { .{{ $cardClass }} { width: 300px; } }
+</style>
+
 <section id="{{ $sectionId }}"
          data-pkg-slider="{{ $sectionId }}"
          class="py-12 sm:py-16 md:py-20 px-4 bg-[var(--color-background)] overflow-hidden">
@@ -45,16 +51,11 @@
         </div>
     </div>
 
-    {{-- Wrapper diberi padding-left agar card pertama tidak nempel/kepotong
-         di tepi layar, dan overflow-x hanya disembunyikan di sini, bukan
-         di parent, supaya pengukuran lebar card selalu konsisten. --}}
-    <div class="pl-4 sm:pl-0 sm:max-w-7xl sm:mx-auto">
+    <div class="pl-4 sm:pl-0 max-w-7xl mx-auto">
         <div id="{{ $sectionId }}_track_wrap" class="overflow-hidden">
             <div id="{{ $sectionId }}_track" class="flex gap-4 sm:gap-4 md:gap-5 will-change-transform">
                 @foreach($allItems as $item)
-                <div class="{{ $cardClass }} shrink-0
-                            w-[calc(100vw-4.5rem)]
-                            sm:w-[260px] md:w-[300px]">
+                <div class="{{ $cardClass }} shrink-0">
                     @include('components.section.type4', [
                         'section_data' => [
                             'image'      => asset($item['image']),
@@ -71,7 +72,6 @@
         </div>
     </div>
 
-    {{-- Dots --}}
     <div id="{{ $sectionId }}_dots" class="flex items-center justify-center gap-2 mt-6 sm:mt-8">
         @foreach($allItems as $i => $item)
         <button aria-label="Go to {{ $item['title'] }}"

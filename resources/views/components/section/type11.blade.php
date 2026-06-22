@@ -20,12 +20,11 @@
     ]);
 @endphp
 
-<section id="listing" class="pt-8 pb-10 pt-15">
-    <div class="max-w-[1280px] mx-auto px-8 md:px-6 sm:px-4">
+<section id="listing" class="pt-[156px] lg:pt-[164px] pb-10" style="margin-top:80px;">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
 
         {{-- ── Top bar: count + sort ───────────────────────────────────────── --}}
-        <div class="flex items-center justify-between flex-wrap gap-3 mt-10 sm:mt-6 mb-4">
-
+        <div class="flex items-center justify-between flex-wrap gap-1">
             <p class="text-sm text-[var(--color-body-text)]/60 m-0">
                 <span class="font-semibold text-[var(--color-heading-text)]">{{ $listings->count() }}+</span>
                 results
@@ -68,9 +67,9 @@
             </form>
         </div>
 
-        {{-- ── Active filter chips (destination + search) ─────────────────── --}}
+        {{-- ── Active filter chips ─────────────────────────────────────────── --}}
         @if($activeDestination || $q)
-            <div class="flex items-center gap-2 flex-wrap mb-4">
+            <div class="flex items-center gap-2 flex-wrap mt-2">
 
                 @if($activeDestination)
                     <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium
@@ -104,8 +103,7 @@
         @endif
 
         {{-- ── Category filter tabs ─────────────────────────────────────────── --}}
-        <div class="-mx-8 md:-mx-6 sm:-mx-4 px-8 md:px-6 sm:px-4
-                    overflow-x-auto scrollbar-none mb-8 sm:mb-6">
+        <div class="overflow-x-auto scrollbar-none mb-8 sm:mb-6 mt-6">
             <div class="flex items-center gap-2 w-max min-w-full pb-1">
                 @php
                     $allTab = ['slug' => 'all', 'label' => 'All'];
@@ -141,7 +139,7 @@
 
         {{-- ── Grid ────────────────────────────────────────────────────────── --}}
         @if($listings->isNotEmpty())
-            <div class="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-5 sm:gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-4">
                 @foreach($listings as $item)
                     <div class="relative">
 
