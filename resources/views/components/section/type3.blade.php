@@ -1,7 +1,7 @@
 @php
     $sectionId      = 'about-us';
     $eyebrow        = 'Who We Are';
-    $title          = 'The Bali Guides Adventure';
+    $title          = config('app.name');
     $description    = 'Bali Guide Adventure is your trusted companion in discovering the beauty, culture, and hidden gems of the Island of the Gods. More than just a tour service, we are passionate local guides who are dedicated to creating memorable journeys tailored to your needs. With years of experience and in-depth knowledge of Bali, we offer a wide range of adventures — from exploring breathtaking temples, lush rice terraces, and pristine beaches, to immersing yourself in authentic Balinese traditions and local hospitality.';
     $ctaLabel       = 'Browse All Trips';
     $ctaLink        = route('trip.index');
