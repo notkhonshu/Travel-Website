@@ -49,7 +49,7 @@
         <div id="{{ $sectionId }}_track_wrap" class="overflow-hidden">
             <div id="{{ $sectionId }}_track" class="flex gap-4 sm:gap-4 md:gap-5 will-change-transform">
                 @foreach($allItems as $item)
-                <div class="{{ $cardClass }} shrink-0 w-[85%] sm:w-[calc(33%-8px)] lg:w-[calc(25%-15px)]">
+                <div class="{{ $cardClass }} shrink-0 w-[85%] sm:w-80 lg:w-72">
                     @include('components.section.type4', [
                         'section_data' => [
                             'image'      => asset($item['image']),

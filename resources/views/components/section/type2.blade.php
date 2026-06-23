@@ -39,7 +39,7 @@
         <div class="overflow-hidden" id="{{ $sectionId }}_track_wrap">
             <div class="flex items-stretch gap-4" id="{{ $sectionId }}_track" style="will-change: transform;">
                 @foreach ($destinations as $dest)
-                <div class="tbg-dest-card shrink-0 w-[88%] sm:w-[calc(33%-8px)] lg:w-[calc(25%-12px)] flex">
+                <div class="tbg-dest-card shrink-0 w-[88%] sm:w-80 lg:w-72 flex">
                     <article class="group relative rounded-[var(--radius-xl)] overflow-hidden shadow-[var(--shadow-card)] cursor-pointer w-full">
                         <div class="relative h-[400px] sm:h-[400px] md:h-[450px] overflow-hidden">
                             <img src="{{ asset($dest['image']) }}"

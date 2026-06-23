@@ -62,9 +62,10 @@
                     </div>
                 </div>
 
-                <div class="flex flex-wrap justify-center gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
+
                     <div class="bg-white/10 rounded-[var(--radius-lg)] px-4 py-5 sm:py-6
-                                flex flex-col items-start text-left gap-3 w-full sm:w-[calc(50%-8px)] md:w-[calc(20%-13px)]">
+                                flex flex-col items-start text-left gap-3">
                         <div class="w-12 h-12 rounded-full bg-white/15 flex items-center justify-center shrink-0">
                             <i class="ti ti-star text-accent text-2xl"></i>
                         </div>
@@ -73,8 +74,9 @@
                             Vetted for their expertise and experience.
                         </p>
                     </div>
+
                     <div class="bg-white/10 rounded-[var(--radius-lg)] px-4 py-5 sm:py-6
-                                flex flex-col items-start text-left gap-3 w-full sm:w-[calc(50%-8px)] md:w-[calc(20%-13px)]">
+                                flex flex-col items-start text-left gap-3">
                         <div class="w-12 h-12 rounded-full bg-white/15 flex items-center justify-center shrink-0">
                             <i class="ti ti-route text-accent text-2xl"></i>
                         </div>
@@ -83,8 +85,9 @@
                             Shape a tour to your interests, pace, and priorities.
                         </p>
                     </div>
+
                     <div class="bg-white/10 rounded-[var(--radius-lg)] px-4 py-5 sm:py-6
-                                flex flex-col items-start text-left gap-3 w-full sm:w-[calc(50%-8px)] md:w-[calc(20%-13px)]">
+                                flex flex-col items-start text-left gap-3">
                         <div class="w-12 h-12 rounded-full bg-white/15 flex items-center justify-center shrink-0">
                             <i class="ti ti-calendar-x text-accent text-2xl"></i>
                         </div>
@@ -93,8 +96,9 @@
                             Standard policy is always included, with option to upgrade.
                         </p>
                     </div>
+
                     <div class="bg-white/10 rounded-[var(--radius-lg)] px-4 py-5 sm:py-6
-                                flex flex-col items-start text-left gap-3 w-full sm:w-[calc(50%-8px)] md:w-[calc(20%-13px)]">
+                                flex flex-col items-start text-left gap-3">
                         <div class="w-12 h-12 rounded-full bg-white/15 flex items-center justify-center shrink-0">
                             <i class="ti ti-headset text-accent text-2xl"></i>
                         </div>
@@ -103,8 +107,9 @@
                             Our staff are ready to help you with 24/7 assistance.
                         </p>
                     </div>
+
                     <div class="bg-white/10 rounded-[var(--radius-lg)] px-4 py-5 sm:py-6
-                                flex flex-col items-start text-left gap-3 w-full sm:w-[calc(50%-8px)] md:w-[calc(20%-13px)]">
+                                flex flex-col items-start text-left gap-3">
                         <div class="w-12 h-12 rounded-full bg-white/15 flex items-center justify-center shrink-0">
                             <i class="ti ti-ship text-accent text-2xl"></i>
                         </div>
@@ -113,6 +118,7 @@
                             Back on time, or we cover the costs & logistics.
                         </p>
                     </div>
+
                 </div>
             </div>
         </div>
