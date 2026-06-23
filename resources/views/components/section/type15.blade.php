@@ -61,24 +61,6 @@
                     </div>
                     @endif
 
-                    @if(!empty(config('social.marketing.whatsapp')))
-                    <div class="flex items-start gap-4 bg-primary/5 border border-primary/10
-                                rounded-2xl p-5 transition-all duration-200
-                                hover:bg-primary/8 hover:border-primary/20">
-                        <span class="flex-shrink-0 w-10 h-10 rounded-xl bg-primary
-                                     flex items-center justify-center text-white text-[17px]">
-                            <i class="ti ti-brand-whatsapp" aria-hidden="true"></i>
-                        </span>
-                        <div>
-                            <p class="font-sans text-[11px] font-semibold tracking-widest uppercase
-                                       text-[var(--color-body-text)] mb-1">Marketing</p>
-                            <p class="font-sans text-[14px] font-medium text-[var(--color-heading-text)]">
-                                {{ config('social.marketing.whatsapp') }}
-                            </p>
-                        </div>
-                    </div>
-                    @endif
-
                     @if(!empty($address['street']))
                     <div class="flex items-start gap-4 bg-primary/5 border border-primary/10
                                 rounded-2xl p-5 transition-all duration-200

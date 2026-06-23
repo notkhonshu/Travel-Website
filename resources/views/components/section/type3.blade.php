@@ -62,55 +62,58 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-
+                <div class="flex flex-wrap justify-center gap-4">
                     <div class="bg-white/10 rounded-[var(--radius-lg)] px-4 py-5 sm:py-6
-                                flex flex-col items-center text-center gap-3">
+                                flex flex-col items-start text-left gap-3 w-full sm:w-[calc(50%-8px)] md:w-[calc(20%-13px)]">
                         <div class="w-12 h-12 rounded-full bg-white/15 flex items-center justify-center shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-accent"
-                                 fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                      d="M5 17H3a1 1 0 01-1-1v-5l2-6h12l2 6v5a1 1 0 01-1 1h-2M5 17a2 2 0 104 0M15 17a2 2 0 104 0"/>
-                            </svg>
+                            <i class="ti ti-star text-accent text-2xl"></i>
                         </div>
-                        <p class="font-heading font-bold text-sm text-white leading-snug">Comfortable Vehicles</p>
+                        <p class="font-heading font-bold text-sm text-white leading-snug">Expert Local Guides</p>
                         <p class="font-sans text-xs text-white/60 leading-relaxed">
-                            A collection of air-conditioned private vehicles to ensure a smooth and enjoyable journey.
+                            Vetted for their expertise and experience.
                         </p>
                     </div>
-
                     <div class="bg-white/10 rounded-[var(--radius-lg)] px-4 py-5 sm:py-6
-                                flex flex-col items-center text-center gap-3">
+                                flex flex-col items-start text-left gap-3 w-full sm:w-[calc(50%-8px)] md:w-[calc(20%-13px)]">
                         <div class="w-12 h-12 rounded-full bg-white/15 flex items-center justify-center shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-accent"
-                                 fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                      d="M17 20h5v-1a4 4 0 00-5-3.87M9 20H4v-1a4 4 0 015-3.87m3-10a4 4 0 100 8 4 4 0 000-8zm9 4a3 3 0 11-6 0 3 3 0 016 0z"/>
-                            </svg>
+                            <i class="ti ti-route text-accent text-2xl"></i>
                         </div>
-                        <p class="font-heading font-bold text-sm text-white leading-snug">Experienced Team</p>
+                        <p class="font-heading font-bold text-sm text-white leading-snug">Customizable Private Tours</p>
                         <p class="font-sans text-xs text-white/60 leading-relaxed">
-                            Professional, experienced, and knowledgeable guides ready to lead you on every adventure.
+                            Shape a tour to your interests, pace, and priorities.
                         </p>
                     </div>
-
                     <div class="bg-white/10 rounded-[var(--radius-lg)] px-4 py-5 sm:py-6
-                                flex flex-col items-center text-center gap-3">
+                                flex flex-col items-start text-left gap-3 w-full sm:w-[calc(50%-8px)] md:w-[calc(20%-13px)]">
                         <div class="w-12 h-12 rounded-full bg-white/15 flex items-center justify-center shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-accent"
-                                 fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                            </svg>
+                            <i class="ti ti-calendar-x text-accent text-2xl"></i>
                         </div>
-                        <p class="font-heading font-bold text-sm text-white leading-snug">Friendly Service</p>
+                        <p class="font-heading font-bold text-sm text-white leading-snug">Flexible Cancellation</p>
                         <p class="font-sans text-xs text-white/60 leading-relaxed">
-                            Customer satisfaction is our priority, excellent service to make your trip more memorable.
+                            Standard policy is always included, with option to upgrade.
                         </p>
                     </div>
-
+                    <div class="bg-white/10 rounded-[var(--radius-lg)] px-4 py-5 sm:py-6
+                                flex flex-col items-start text-left gap-3 w-full sm:w-[calc(50%-8px)] md:w-[calc(20%-13px)]">
+                        <div class="w-12 h-12 rounded-full bg-white/15 flex items-center justify-center shrink-0">
+                            <i class="ti ti-headset text-accent text-2xl"></i>
+                        </div>
+                        <p class="font-heading font-bold text-sm text-white leading-snug">In-House Support</p>
+                        <p class="font-sans text-xs text-white/60 leading-relaxed">
+                            Our staff are ready to help you with 24/7 assistance.
+                        </p>
+                    </div>
+                    <div class="bg-white/10 rounded-[var(--radius-lg)] px-4 py-5 sm:py-6
+                                flex flex-col items-start text-left gap-3 w-full sm:w-[calc(50%-8px)] md:w-[calc(20%-13px)]">
+                        <div class="w-12 h-12 rounded-full bg-white/15 flex items-center justify-center shrink-0">
+                            <i class="ti ti-ship text-accent text-2xl"></i>
+                        </div>
+                        <p class="font-heading font-bold text-sm text-white leading-snug">Return to Ship Guarantee</p>
+                        <p class="font-sans text-xs text-white/60 leading-relaxed">
+                            Back on time, or we cover the costs & logistics.
+                        </p>
+                    </div>
                 </div>
-
             </div>
         </div>
     </div>

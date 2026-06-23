@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\File;
 class GalleryController extends Controller
 {
     private array $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'avif'];
+
     public function index()
     {
         $galleryPath = public_path('assets/img/static/gallery');
@@ -28,6 +29,18 @@ class GalleryController extends Controller
                 ->values();
         }
 
-        return view('pages.landing.gallery', compact('images'));
+        $data = [
+            'metadata' => [
+                'title'          => 'Gallery | The Bali Guides Adventure',
+                'description'    => 'Browse photos from our Bali tours and activities — volcanic treks, waterfalls, snorkeling, and cultural adventures captured by our guests and guides.',
+                'keyword'        => 'bali gallery, bali tour photos, bali adventure photos, the bali guides adventure gallery',
+                'og-title'       => 'Photo Gallery — The Bali Guides Adventure',
+                'og-description' => 'A look at the adventures, landscapes, and experiences our guests have captured across Bali.',
+                'og-image'       => $images->first()['url'] ?? asset('assets/img/static/beach.jpg'),
+                'og-type'        => 'website',
+            ],
+        ];
+
+        return view('pages.landing.gallery', compact('images', 'data'));
     }
 }

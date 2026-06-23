@@ -2,42 +2,51 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 class TripController extends Controller
 {
     public function show(string $slug)
     {
-        $data = config('data');
+        $configData = config('data');
 
-        $trip = collect($data['packages'])->firstWhere('slug', $slug);
+        $trip = collect($configData['packages'])->firstWhere('slug', $slug);
         $type = 'package';
-
         if (! $trip) {
-            $trip = collect($data['activities'])->firstWhere('slug', $slug);
+            $trip = collect($configData['activities'])->firstWhere('slug', $slug);
             $type = 'activity';
         }
 
         abort_if(! $trip, 404);
 
-        // Resolve image paths ke URL absolut
+        $destination = collect($configData['destinations'])->firstWhere('slug', $trip['destination']);
+
+        $data = [
+            'metadata' => [
+                'title'          => "{$trip['title']} - {$trip['duration']} | The Bali Guides Adventure",
+                'description'    => $trip['excerpt'] ?? '',
+                'keyword'        => "{$trip['category']}, {$trip['destination']}, bali tour, {$trip['title']}",
+                'og-title'       => $trip['title'],
+                'og-description' => $trip['excerpt'] ?? '',
+                'og-image'       => $trip['image'] ?? 'assets/img/static/beach.jpg',
+                'og-type'        => 'product',
+            ],
+        ];
+
         $trip = $this->resolveImagePaths($trip);
 
-        $destination = collect($data['destinations'])->firstWhere('slug', $trip['destination']);
-
-        return view('pages.detail.trip', compact('trip', 'type', 'destination'));
+        return view('pages.detail.trip', compact('trip', 'type', 'destination', 'data'));
     }
 
     private function resolveImagePaths(array $trip): array
     {
-        if (!empty($trip['image'])) {
+        if (!empty($trip['image']) && !str_starts_with($trip['image'], 'http')) {
             $trip['image'] = asset($trip['image']);
         }
-
         if (!empty($trip['gallery'])) {
-            $trip['gallery'] = array_map(fn($img) => asset($img), $trip['gallery']);
+            $trip['gallery'] = array_map(
+                fn($img) => str_starts_with($img, 'http') ? $img : asset($img),
+                $trip['gallery']
+            );
         }
-
         return $trip;
     }
 }

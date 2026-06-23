@@ -16,15 +16,15 @@
                     pb-10 md:pb-14 border-b border-white/20">
             <div class="flex flex-col gap-6 sm:col-span-2 md:col-span-1">
                 <div>
-                    <h4 class="text-white text-[20px] font-heading font-bold leading-snug text-center md:text-left">
+                    <h4 class="text-white text-[20px] font-heading font-bold leading-snug text-left md:text-center">
                         {{ config('app.name') }}
                     </h4>
-                    <p class="mt-3 text-white/70 text-[15px] leading-relaxed text-justify md:text-left">
+                    <p class="mt-3 text-white/70 text-[15px] leading-relaxed text-left md:text-justify">
                         We specialize in creating awesome and extraordinary experiences, whether you're looking for thrilling adventures or serene landscapes of Bali or venturing into the cultural wonders of Asia.
                     </p>
                 </div>
 
-                <div class="flex flex-wrap gap-2 justify-center md:justify-start">
+                <div class="flex flex-wrap gap-2 justify-sart md:justify-center">
                     <a href="{{ config('social.facebook.url') }}" target="_blank" rel="noopener"
                         aria-label="Facebook"
                         class="text-white/70 hover:text-[var(--color-accent)] transition-colors duration-200">
@@ -54,9 +54,6 @@
                             <a href="{{ $item['link'] }}"
                                class="text-white/70 hover:text-white text-[15px]
                                       transition-colors duration-200 flex items-center gap-1.5 group">
-                                <i class="ti ti-arrow-right text-xs text-white/30
-                                          group-hover:text-white/70 group-hover:translate-x-0.5
-                                          transition-all duration-200"></i>
                                 {{ $item['title'] }}
                             </a>
                         </li>

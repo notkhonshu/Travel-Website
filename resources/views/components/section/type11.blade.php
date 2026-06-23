@@ -1,5 +1,3 @@
-{{-- resources/views/components/section/type11.blade.php --}}
-
 @php
     $listings          = $listings          ?? collect();
     $categories        = $categories        ?? [];
@@ -22,16 +20,12 @@
     ]);
 @endphp
 
-<section id="listing" class="pt-[156px] lg:pt-[164px] pb-10" style="margin-top:80px;">
+<section id="listing" class="pt-[40px] pb-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
 
         {{-- ── Top bar: count + sort ───────────────────────────────────────── --}}
-<<<<<<< HEAD
-        <div class="flex items-center justify-between flex-wrap gap-1">
-=======
         <div class="flex items-center justify-between flex-wrap gap-3 mt-[3rem]">
 
->>>>>>> origin/master
             <p class="text-sm text-[var(--color-body-text)]/60 m-0">
                 <span class="font-semibold text-[var(--color-heading-text)]">{{ $listings->count() }}+</span>
                 results
@@ -112,54 +106,43 @@
         @endif
 
         {{-- ── Category filter tabs ─────────────────────────────────────────── --}}
-<<<<<<< HEAD
         <div class="overflow-x-auto scrollbar-none mb-8 sm:mb-6 mt-6">
             <div class="flex items-center gap-2 w-max min-w-full pb-1">
                 @php
                     $allTab = ['slug' => 'all', 'label' => 'All'];
                     $tabs   = array_merge([$allTab], $categories);
                 @endphp
-=======
-        <div class="flex items-center gap-2 flex-wrap mb-8">
-            @php
-                $allTab = ['slug' => 'all', 'label' => 'All'];
-                $tabs   = array_merge([$allTab], $categories);
-            @endphp
->>>>>>> origin/master
 
-            @foreach($tabs as $cat)
-                @php
-                    $isActive = $activeCategory === $cat['slug'];
-                    $href = route('trip.index', array_filter([
-                        'category'    => $cat['slug'] !== 'all' ? $cat['slug'] : null,
-                        'destination' => $activeDestination ?: null,
-                        'sort'        => $sort !== 'default'    ? $sort         : null,
-                        'q'           => $q ?: null,
-                    ]));
-                @endphp
-                <a href="{{ $href }}"
-                   class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium
-                          border transition-all duration-200
-                          {{ $isActive
-                              ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white'
-                              : 'bg-white border-[var(--color-border)] text-[var(--color-body-text)]/70 hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]'
-                          }}"
-                >
-                    @if($cat['slug'] === 'all')
-                        <i class="ti ti-layout-grid text-[13px]" aria-hidden="true"></i>
-                    @endif
-                    {{ $cat['label'] }}
-                </a>
-            @endforeach
+                @foreach($tabs as $cat)
+                    @php
+                        $isActive = $activeCategory === $cat['slug'];
+                        $href = route('trip.index', array_filter([
+                            'category'    => $cat['slug'] !== 'all' ? $cat['slug'] : null,
+                            'destination' => $activeDestination ?: null,
+                            'sort'        => $sort !== 'default'    ? $sort         : null,
+                            'q'           => $q ?: null,
+                        ]));
+                    @endphp
+                    <a href="{{ $href }}"
+                       class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium
+                              border transition-all duration-200
+                              {{ $isActive
+                                  ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white'
+                                  : 'bg-white border-[var(--color-border)] text-[var(--color-body-text)]/70 hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]'
+                              }}"
+                    >
+                        @if($cat['slug'] === 'all')
+                            <i class="ti ti-layout-grid text-[13px]" aria-hidden="true"></i>
+                        @endif
+                        {{ $cat['label'] }}
+                    </a>
+                @endforeach
+            </div>
         </div>
 
         {{-- ── Grid ────────────────────────────────────────────────────────── --}}
         @if($listings->isNotEmpty())
-<<<<<<< HEAD
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-4">
-=======
-            <div class="grid grid-cols-4 lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-2 gap-5">
->>>>>>> origin/master
                 @foreach($listings as $item)
                     <div class="relative">
 

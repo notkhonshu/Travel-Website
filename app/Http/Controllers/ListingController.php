@@ -8,22 +8,19 @@ class ListingController extends Controller
 {
     public function index(Request $request)
     {
-        $data = config('data');
+        $configData = config('data');
 
-        // ── Base collections ─────────────────────────────────────────────────
-        $packages   = collect($data['packages']   ?? [])->map(fn($p) => array_merge($p, ['type' => 'package']));
-        $activities = collect($data['activities'] ?? [])->map(fn($a) => array_merge($a, ['type' => 'activity']));
+        $packages   = collect($configData['packages']   ?? [])->map(fn($p) => array_merge($p, ['type' => 'package']));
+        $activities = collect($configData['activities'] ?? [])->map(fn($a) => array_merge($a, ['type' => 'activity']));
         $allListings = $packages->concat($activities);
 
-        // ── Destinations ─────────────────────────────────────────────────────
-        $destConfig  = collect($data['destinations'] ?? []);
+        $destConfig  = collect($configData['destinations'] ?? []);
         $usedSlugs   = $allListings->pluck('destination')->filter()->unique()->values();
         $destinations = $usedSlugs
             ->map(fn($slug) => $destConfig->firstWhere('slug', $slug))
             ->filter()
             ->values();
 
-        // ── Categories (dari data langsung, tanpa icon map) ───────────────────
         $categories = $allListings
             ->pluck('category')
             ->filter()
@@ -35,7 +32,6 @@ class ListingController extends Controller
             ])
             ->all();
 
-        // ── Search query ──────────────────────────────────────────────────────
         $q = trim($request->query('q', ''));
         if ($q !== '') {
             $qLower      = strtolower($q);
@@ -52,13 +48,11 @@ class ListingController extends Controller
             });
         }
 
-        // ── Category filter ───────────────────────────────────────────────────
         $activeCategory = $request->query('category', 'all');
         $listings = $activeCategory !== 'all'
             ? $allListings->filter(fn($item) => ($item['category'] ?? '') === $activeCategory)
             : $allListings;
 
-        // ── Destination filter ────────────────────────────────────────────────
         $activeDestination = $request->query('destination', '');
         if ($activeDestination !== '') {
             $listings = $listings->filter(
@@ -66,7 +60,6 @@ class ListingController extends Controller
             );
         }
 
-        // ── Sort ──────────────────────────────────────────────────────────────
         $sort = $request->query('sort', 'default');
         $listings = match ($sort) {
             'price_asc'  => $listings->sortBy('price'),
@@ -76,6 +69,33 @@ class ListingController extends Controller
         };
         $listings = $listings->values();
 
+        $pageTitle = 'Bali Tours & Activities';
+
+        if ($activeDestination !== '') {
+            $destLabel = optional($destConfig->firstWhere('slug', $activeDestination))['label']
+                ?? ucwords(str_replace('-', ' ', $activeDestination));
+            $pageTitle = "Tours in {$destLabel}, Bali";
+        } elseif ($activeCategory !== 'all' && $activeCategory !== '') {
+            $catLabel  = ucwords(str_replace('-', ' ', $activeCategory));
+            $pageTitle = "{$catLabel} Tours in Bali";
+        }
+
+        if ($q !== '') {
+            $pageTitle = "Search results for \"{$q}\" — {$pageTitle}";
+        }
+
+        $data = [
+            'metadata' => [
+                'title'          => "{$pageTitle} | The Bali Guides Adventure",
+                'description'    => "Browse {$pageTitle} — book the best guided tours and activities across Bali with The Bali Guides Adventure.",
+                'keyword'        => "bali tours, {$activeDestination}, {$activeCategory}, bali activities, the bali guides adventure",
+                'og-title'       => $pageTitle,
+                'og-description' => "Explore {$pageTitle} and book your next Bali adventure with trusted local guides.",
+                'og-image'       => $listings->first()['image'] ?? 'assets/img/static/beach.jpg',
+                'og-type'        => 'website',
+            ],
+        ];
+
         return view('pages.landing.trip', compact(
             'listings',
             'categories',
@@ -83,7 +103,8 @@ class ListingController extends Controller
             'activeCategory',
             'activeDestination',
             'sort',
-            'q'
+            'q',
+            'data'
         ));
     }
 }

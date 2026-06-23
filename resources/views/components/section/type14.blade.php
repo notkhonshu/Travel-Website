@@ -2,8 +2,8 @@
 
 @php
     $price = number_format($trip['price'], 0, ',', '.');
-    $bookUrl = config('bookurl');
-    $whatsappNumber = config('social.maketing.whatsapp', '6281234567890');
+    $bookUrl = config('social.bookurl');
+    $whatsappNumber = config('social.marketing.whatsapp');
     $whatsappMessage = urlencode("Hi! I'm interested in booking: {$trip['title']}");
     $whatsappUrl = "https://wa.me/{$whatsappNumber}?text={$whatsappMessage}";
 @endphp
