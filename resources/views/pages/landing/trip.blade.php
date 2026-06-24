@@ -7,11 +7,13 @@
 @section('content')
 
     @include('components.section.type11', [
-        'listings'       => $listings,
-        'categories'     => $categories,
-        'activeCategory' => $activeCategory,
-        'sort'           => $sort,
-        'q'              => $q,
+        'mode'             => 'trip',
+        'listings'         => $listings,
+        'categories'       => $categories,
+        'activeCategory'   => $activeCategory,
+        'activeDestination'=> $activeDestination,
+        'sort'             => $sort,
+        'q'                => $q,
     ])
 
     @include('components.section.type7')

@@ -48,12 +48,13 @@
                     Useful Links
                 </h5>
                 <nav aria-label="Footer navigation">
-                    <ul class="space-y-3">
+                    <ul class="space-y-2">
                         @foreach ($usefulLinks as $item)
                         <li>
                             <a href="{{ $item['link'] }}"
-                               class="text-white/70 hover:text-white text-[15px]
-                                      transition-colors duration-200 flex items-center gap-1.5 group">
+                            class="group flex items-center gap-1.5
+                                    text-white/70 hover:text-[var(--color-accent)] hover:pl-1.5
+                                    text-[15px] transition-all duration-200">
                                 {{ $item['title'] }}
                             </a>
                         </li>

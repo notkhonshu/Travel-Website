@@ -22,7 +22,7 @@
         @include('components.section.type2', [
             'section_data' => [
                 'id'       => 'destinations',
-                'eyebrow'  => "Where to Go",
+                'eyebrow'  => "Things to see",
                 'title'    => "Explore Bali's Destinations",
                 'description' => "From volcanic highlands to clifftop temples — every corner of Bali tells a different story.",
             ],
@@ -53,8 +53,8 @@
             'section_data' => [
                 'id'          => 'activities',
                 'source'      => 'activities',
-                'eyebrow'     => 'Activities',
-                'title'       => 'Things To Do',
+                'eyebrow'     => 'Things to do',
+                'title'       => 'Explore Our Activity',
                 'description' => 'Discover exciting activities and unique adventures that let you experience each destination in a fun, authentic, and unforgettable way.',
             ]
         ])

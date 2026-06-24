@@ -2,6 +2,7 @@
     $secondaryNav = config('data.nav.secondary', []);
     $packages     = collect(config('data.packages', []));
     $activities   = collect(config('data.activities', []));
+    $posts        = collect(config('blog.posts', []));
 
     $destinations = collect(config('data.destinations', []))->map(function ($dest) use ($packages, $activities) {
         $dest['packages']   = $packages->whereIn('slug', $dest['packages'] ?? [])->values();
@@ -12,8 +13,9 @@
     $destinationsNav      = $destinations->take(6);
     $destinationsFullmenu = $destinations->take(5);
 
-    $packagesNav   = $packages->take(3);
-    $activitiesNav = $activities->take(3);
+    $packagesNav   = $packages->take(6);
+    $activitiesNav = $activities->take(6);
+    $postsNav      = $posts->take(3);
 
     $tripNavbar = ($layout_settings['trip_navbar'] ?? false);
 
@@ -21,6 +23,7 @@
     $hasActivities = $activities->isNotEmpty();
     $hasTrip       = $hasPackages || $hasActivities;
     $hasDest       = $destinationsNav->isNotEmpty();
+    $hasBlog       = $posts->isNotEmpty();
 @endphp
 
 <header id="tbg-header"
@@ -35,7 +38,7 @@
                 max-w-[1400px] mx-auto px-4 sm:px-6 h-[68px]
                 {{ $tripNavbar
                     ? 'grid-cols-[1fr_auto_auto] md:grid-cols-[1fr_2fr_1fr]'
-                    : 'grid-cols-[1fr_auto] md:grid-cols-[1fr_auto_1fr]' }}"
+                    : 'grid-cols-[1fr_auto] lg:grid-cols-[1fr_auto_1fr]' }}"
          aria-label="Main navigation">
 
         {{-- ══ COL 1 — LOGO ══ --}}
@@ -48,10 +51,9 @@
 
         {{-- ══ COL 2 — DEFAULT: MAIN NAV | TRIP: SEARCHBAR ══ --}}
         @if(!$tripNavbar)
+        <div class="hidden lg:flex items-center justify-center gap-0.5" role="list">
 
-        <div class="hidden md:flex items-center justify-center gap-0.5" role="list">
-
-            @if($hasTrip)
+            @if($hasPackages)
             <div class="tbg-menu-item relative" role="listitem">
                 <button class="tbg-menu-trigger tbg-nav-text
                                flex items-center gap-1.5 px-3 py-2
@@ -61,7 +63,7 @@
                         aria-haspopup="true"
                         aria-expanded="false"
                         aria-controls="tbg-dropdown-packages">
-                    Trip
+                    Our Package
                     <i class="ti ti-chevron-down text-sm transition-transform duration-300
                               [.tbg-menu-item.tbg-open_&]:rotate-180"
                        aria-hidden="true"></i>
@@ -84,7 +86,7 @@
                             [&.tbg-drop-open]:translate-y-0
                             z-50"
                      role="region"
-                     aria-label="Trip menu">
+                     aria-label="Our Package menu">
 
                     <span class="absolute -top-[6px] left-1/2 -translate-x-1/2 rotate-45
                                  w-3 h-3 bg-[var(--color-background)]
@@ -92,94 +94,40 @@
                                  rounded-tl-sm"
                           aria-hidden="true"></span>
 
-                    @if($hasPackages)
-                    <div class="p-2 pb-1">
-                        <p class="px-2 py-1.5 font-sans text-[10px] font-semibold
-                                  tracking-widest uppercase text-[var(--color-body-text)]">
-                            Packages
-                        </p>
-                        <div class="{{ $packagesNav->count() === 1 ? 'grid grid-cols-1' : 'grid grid-cols-2' }} gap-0.5">
-                            @foreach ($packagesNav as $pkg)
-                            <a href="{{ route('trip.show', $pkg['slug']) }}"
-                               class="flex items-start gap-3 p-3
-                                      rounded-xl hover:bg-[var(--color-surface)]
-                                      transition-colors duration-150 group">
-                                <span class="flex-shrink-0 w-9 h-9
-                                             rounded-lg bg-[var(--color-primary)]/8
-                                             flex items-center justify-center
-                                             text-[var(--color-secondary)] text-[17px] mt-0.5
-                                             group-hover:bg-[var(--color-primary)]/14
-                                             transition-colors">
-                                    <i class="ti {{ $pkg['icon'] ?? 'ti-package' }}" aria-hidden="true"></i>
+                    <div class="p-2 {{ $packagesNav->count() === 1 ? 'grid grid-cols-1' : 'grid grid-cols-2' }} gap-0.5">
+                        @foreach ($packagesNav as $pkg)
+                        <a href="{{ route('package.show', $pkg['slug']) }}"
+                           class="flex items-start gap-3 p-3
+                                  rounded-xl hover:bg-[var(--color-surface)]
+                                  transition-colors duration-150 group">
+                            <span class="flex-shrink-0 w-9 h-9
+                                         rounded-lg bg-[var(--color-primary)]/8
+                                         flex items-center justify-center
+                                         text-[var(--color-secondary)] text-[17px] mt-0.5
+                                         group-hover:bg-[var(--color-primary)]/14
+                                         transition-colors">
+                                <i class="ti {{ $pkg['icon'] ?? 'ti-package' }} text-accent" aria-hidden="true"></i>
+                            </span>
+                            <span class="flex flex-col gap-0.5 min-w-0 overflow-hidden">
+                                <span class="font-sans text-[13.5px] font-medium
+                                             text-[var(--color-heading-text)] leading-tight truncate">
+                                    {{ $pkg['title'] }}
                                 </span>
-                                <span class="flex flex-col gap-0.5 min-w-0 overflow-hidden">
-                                    <span class="font-sans text-[13.5px] font-medium
-                                                 text-[var(--color-heading-text)] leading-tight truncate">
-                                        {{ $pkg['title'] }}
-                                    </span>
-                                    <span class="font-sans text-[12px]
-                                                 text-[var(--color-body-text)] leading-snug">
-                                        {{ $pkg['duration'] }}
-                                    </span>
+                                <span class="font-sans text-[12px]
+                                             text-[var(--color-body-text)] leading-snug">
+                                    {{ $pkg['duration'] }}
                                 </span>
-                            </a>
-                            @endforeach
-                        </div>
+                            </span>
+                        </a>
+                        @endforeach
                     </div>
-                    @endif
-
-                    @if($hasPackages && $hasActivities)
-                    <div class="mx-4 border-t border-[var(--color-border)]"></div>
-                    @endif
-
-                    @if($hasActivities)
-                    <div class="p-2 pt-1">
-                        <p class="px-2 py-1.5 font-sans text-[10px] font-semibold
-                                  tracking-widest uppercase text-[var(--color-body-text)]">
-                            Activities
-                        </p>
-                        <div class="{{ $activitiesNav->count() === 1 ? 'grid grid-cols-1' : 'grid grid-cols-2' }} gap-0.5">
-                            @foreach ($activitiesNav as $act)
-                            <a href="{{ route('trip.show', $act['slug']) }}"
-                               class="flex items-start gap-3 p-3
-                                      rounded-xl hover:bg-[var(--color-surface)]
-                                      transition-colors duration-150 group">
-                                <span class="flex-shrink-0 w-9 h-9
-                                             rounded-lg bg-[var(--color-primary)]/8
-                                             flex items-center justify-center
-                                             text-[var(--color-secondary)] text-[17px] mt-0.5
-                                             group-hover:bg-[var(--color-primary)]/14
-                                             transition-colors">
-                                    <i class="ti {{ $act['icon'] ?? 'ti-bolt' }}" aria-hidden="true"></i>
-                                </span>
-                                <span class="flex flex-col gap-0.5 min-w-0 overflow-hidden">
-                                    <span class="font-sans text-[13.5px] font-medium
-                                                 text-[var(--color-heading-text)] leading-tight truncate">
-                                        {{ $act['title'] }}
-                                    </span>
-                                    <span class="font-sans text-[12px]
-                                                 text-[var(--color-body-text)] leading-snug">
-                                        {{ $act['duration'] }}
-                                    </span>
-                                </span>
-                            </a>
-                            @endforeach
-                        </div>
-                    </div>
-                    @endif
 
                     <div class="px-3 pb-3 pt-1 border-t border-[var(--color-border)] mx-2
                                 flex items-center justify-between">
                         <span class="font-sans text-[11px] text-[var(--color-body-text)] uppercase tracking-widest">
-                            @if($hasPackages && $hasActivities)
-                                {{ $packages->count() }} packages · {{ $activities->count() }} activities
-                            @elseif($hasPackages)
-                                {{ $packages->count() }} packages
-                            @else
-                                {{ $activities->count() }} activities
-                            @endif
+                            {{ $packages->count() }} packages
                         </span>
-                        <a href="{{ route('trip.index') }}"
+                        <a href="{{ route('package.index') }}"
                            class="font-sans text-[11px] font-semibold text-[var(--color-accent)]
                                   flex items-center gap-1 hover:gap-1.5 transition-all duration-200">
                             View all <i class="ti ti-arrow-right text-xs"></i>
@@ -200,7 +148,7 @@
                         aria-haspopup="true"
                         aria-expanded="false"
                         aria-controls="tbg-dropdown-destinations">
-                    Destinations
+                    Things to See
                     <i class="ti ti-chevron-down text-sm transition-transform duration-300
                               [.tbg-menu-item.tbg-open_&]:rotate-180"
                        aria-hidden="true"></i>
@@ -223,7 +171,7 @@
                             [&.tbg-drop-open]:translate-y-0
                             z-50"
                      role="region"
-                     aria-label="Destinations menu">
+                     aria-label="Things to See menu">
 
                     <span class="absolute -top-[6px] left-1/2 -translate-x-1/2 rotate-45
                                  w-3 h-3 bg-[var(--color-background)]
@@ -244,7 +192,7 @@
                                          text-[var(--color-secondary)] text-[17px] mt-0.5
                                          group-hover:bg-[var(--color-primary)]/14
                                          transition-colors">
-                                <i class="ti ti-map-pin" aria-hidden="true"></i>
+                                <i class="ti ti-map-pin text-accent" aria-hidden="true"></i>
                             </span>
                             <span class="flex flex-col gap-0.5 min-w-0 overflow-hidden">
                                 <span class="font-sans text-[13.5px] font-medium
@@ -263,9 +211,173 @@
                     <div class="px-3 pb-3 pt-1 border-t border-[var(--color-border)] mx-2
                                 flex items-center justify-between">
                         <span class="font-sans text-[11px] text-[var(--color-body-text)] uppercase tracking-widest">
-                            Destinations — {{ $destinations->count() }} destinations
+                            {{ $destinations->count() }} destinations
                         </span>
-                        <a href="{{ route('trip.index') }}"
+                        <a href="{{ route('destination.index') }}"
+                           class="font-sans text-[11px] font-semibold text-[var(--color-accent)]
+                                  flex items-center gap-1 hover:gap-1.5 transition-all duration-200">
+                            View all <i class="ti ti-arrow-right text-xs"></i>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+            @endif
+
+            @if($hasActivities)
+            <div class="tbg-menu-item relative" role="listitem">
+                <button class="tbg-menu-trigger tbg-nav-text
+                               flex items-center gap-1.5 px-3 py-2
+                               rounded-lg font-sans text-sm font-medium text-white
+                               transition-colors duration-200 cursor-pointer bg-transparent border-none
+                               hover:bg-white/12"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        aria-controls="tbg-dropdown-activities">
+                    Things to Do
+                    <i class="ti ti-chevron-down text-sm transition-transform duration-300
+                              [.tbg-menu-item.tbg-open_&]:rotate-180"
+                       aria-hidden="true"></i>
+                </button>
+
+                <div id="tbg-dropdown-activities"
+                     class="tbg-dropdown
+                            absolute top-[calc(100%+10px)] left-1/2
+                            -translate-x-1/2 -translate-y-1.5
+                            bg-[var(--color-background)]
+                            rounded-2xl
+                            border border-[var(--color-border)]
+                            shadow-[var(--shadow-card-hover)]
+                            w-[420px]
+                            opacity-0 pointer-events-none
+                            transition-all duration-200 ease-in-out
+                            [&.tbg-drop-open]:opacity-100
+                            [&.tbg-drop-open]:pointer-events-auto
+                            [&.tbg-drop-open]:-translate-x-1/2
+                            [&.tbg-drop-open]:translate-y-0
+                            z-50"
+                     role="region"
+                     aria-label="Things to Do menu">
+
+                    <span class="absolute -top-[6px] left-1/2 -translate-x-1/2 rotate-45
+                                 w-3 h-3 bg-[var(--color-background)]
+                                 border-l border-t border-[var(--color-border)]
+                                 rounded-tl-sm"
+                          aria-hidden="true"></span>
+
+                    <div class="p-2 {{ $activitiesNav->count() === 1 ? 'grid grid-cols-1' : 'grid grid-cols-2' }} gap-0.5">
+                        @foreach ($activitiesNav as $act)
+                        <a href="{{ route('activity.show', $act['slug']) }}"
+                           class="flex items-start gap-3 p-3
+                                  rounded-xl hover:bg-[var(--color-surface)]
+                                  transition-colors duration-150 group">
+                            <span class="flex-shrink-0 w-9 h-9
+                                         rounded-lg bg-[var(--color-primary)]/8
+                                         flex items-center justify-center
+                                         text-[var(--color-secondary)] text-[17px] mt-0.5
+                                         group-hover:bg-[var(--color-primary)]/14
+                                         transition-colors">
+                                <i class="ti {{ $act['icon'] ?? 'ti-bolt' }} text-accent" aria-hidden="true"></i>
+                            </span>
+                            <span class="flex flex-col gap-0.5 min-w-0 overflow-hidden">
+                                <span class="font-sans text-[13.5px] font-medium
+                                             text-[var(--color-heading-text)] leading-tight truncate">
+                                    {{ $act['title'] }}
+                                </span>
+                                <span class="font-sans text-[12px]
+                                             text-[var(--color-body-text)] leading-snug">
+                                    {{ $act['duration'] }}
+                                </span>
+                            </span>
+                        </a>
+                        @endforeach
+                    </div>
+
+                    <div class="px-3 pb-3 pt-1 border-t border-[var(--color-border)] mx-2
+                                flex items-center justify-between">
+                        <span class="font-sans text-[11px] text-[var(--color-body-text)] uppercase tracking-widest">
+                            {{ $activities->count() }} activities
+                        </span>
+                        <a href="{{ route('activity.index') }}"
+                           class="font-sans text-[11px] font-semibold text-[var(--color-accent)]
+                                  flex items-center gap-1 hover:gap-1.5 transition-all duration-200">
+                            View all <i class="ti ti-arrow-right text-xs"></i>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+            @endif
+
+            @if($hasBlog)
+            <div class="tbg-menu-item relative" role="listitem">
+                <button class="tbg-menu-trigger tbg-nav-text
+                               flex items-center gap-1.5 px-3 py-2
+                               rounded-lg font-sans text-sm font-medium text-white
+                               transition-colors duration-200 cursor-pointer bg-transparent border-none
+                               hover:bg-white/12"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        aria-controls="tbg-dropdown-blog">
+                    Things to Know
+                    <i class="ti ti-chevron-down text-sm transition-transform duration-300
+                              [.tbg-menu-item.tbg-open_&]:rotate-180"
+                       aria-hidden="true"></i>
+                </button>
+
+                <div id="tbg-dropdown-blog"
+                     class="tbg-dropdown
+                            absolute top-[calc(100%+10px)] left-1/2
+                            -translate-x-1/2 -translate-y-1.5
+                            bg-[var(--color-background)]
+                            rounded-2xl
+                            border border-[var(--color-border)]
+                            shadow-[var(--shadow-card-hover)]
+                            w-[380px]
+                            opacity-0 pointer-events-none
+                            transition-all duration-200 ease-in-out
+                            [&.tbg-drop-open]:opacity-100
+                            [&.tbg-drop-open]:pointer-events-auto
+                            [&.tbg-drop-open]:-translate-x-1/2
+                            [&.tbg-drop-open]:translate-y-0
+                            z-50"
+                     role="region"
+                     aria-label="Things to Know menu">
+
+                    <span class="absolute -top-[6px] left-1/2 -translate-x-1/2 rotate-45
+                                 w-3 h-3 bg-[var(--color-background)]
+                                 border-l border-t border-[var(--color-border)]
+                                 rounded-tl-sm"
+                          aria-hidden="true"></span>
+
+                    <div class="p-2 grid grid-cols-1 gap-0.5">
+                        @foreach ($postsNav as $post)
+                        <a href="{{ route('article.show', $post['slug']) }}"
+                           class="flex items-start gap-3 p-3
+                                  rounded-xl hover:bg-[var(--color-surface)]
+                                  transition-colors duration-150 group">
+                            <img src="{{ asset($post['image']) }}" alt=""
+                                 class="w-12 h-12 rounded-lg object-cover shrink-0">
+                            <span class="flex flex-col gap-0.5 min-w-0 overflow-hidden">
+                                <span class="font-sans text-[13.5px] font-medium
+                                             text-[var(--color-heading-text)] leading-tight truncate">
+                                    {{ $post['title'] }}
+                                </span>
+                                <span class="font-sans text-[11px]
+                                             text-[var(--color-body-text)] leading-snug">
+                                    {{ $post['read_time'] }} min read
+                                </span>
+                            </span>
+                        </a>
+                        @endforeach
+                    </div>
+
+                    <div class="px-3 pb-3 pt-1 border-t border-[var(--color-border)] mx-2
+                                flex items-center justify-between">
+                        <span class="font-sans text-[11px] text-[var(--color-body-text)] uppercase tracking-widest">
+                            {{ $posts->count() }} articles
+                        </span>
+                        <a href="{{ route('article.index') }}"
                            class="font-sans text-[11px] font-semibold text-[var(--color-accent)]
                                   flex items-center gap-1 hover:gap-1.5 transition-all duration-200">
                             View all <i class="ti ti-arrow-right text-xs"></i>
@@ -673,89 +785,101 @@
         </div>
 
         <div class="max-w-[1400px] mx-auto px-4 sm:px-8 py-8 sm:py-12
-                    grid grid-cols-1 {{ $hasTrip ? 'md:grid-cols-2' : '' }} gap-x-8 gap-y-10">
-            @if($hasTrip)
-            <div>
-                <div class="flex items-center justify-between mb-5 sm:mb-6
-                            border-b border-[var(--color-border)] pb-4">
-                    <h2 class="font-heading font-bold text-xl sm:text-2xl text-[var(--color-heading-text)]">
-                        Trip
-                    </h2>
-                    <a href="{{ route('trip.index') }}"
-                       class="font-sans text-xs text-[var(--color-accent)] flex items-center gap-1
-                              hover:gap-2 transition-all duration-200">
-                        View all <i class="ti ti-arrow-right text-sm"></i>
-                    </a>
-                </div>
+                    grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
 
+            {{-- LEFT COLUMN — Our Package + Things to Do --}}
+            <div class="flex flex-col gap-10">
                 @if($hasPackages)
-                <p class="font-sans text-[10px] font-semibold tracking-widest uppercase
-                          text-[var(--color-body-text)] mb-2">
-                    Packages
-                </p>
-                @foreach($packagesNav as $pkg)
-                <a href="{{ route('trip.show', $pkg['slug']) }}"
-                   class="group flex items-center justify-between
-                          py-3.5 border-b border-[var(--color-border)]
-                          hover:pl-1.5 transition-all duration-200">
-                    <div class="min-w-0 mr-3">
-                        <p class="font-sans text-sm font-medium text-[var(--color-heading-text)]
-                                   group-hover:text-[var(--color-accent)] transition-colors duration-200 leading-snug truncate">
-                            {{ $pkg['title'] }}
-                        </p>
-                        <p class="font-sans text-xs text-[var(--color-body-text)] mt-0.5">
-                            {{ $pkg['duration'] }}
-                            @if(!empty($pkg['badge']))
-                                &middot; <span class="text-[var(--color-accent)] font-medium">{{ $pkg['badge'] }}</span>
-                            @endif
-                        </p>
+                <div>
+                    <div class="flex items-center justify-between mb-5 sm:mb-6
+                                border-b border-[var(--color-border)] pb-4">
+                        <h2 class="font-heading font-bold text-xl sm:text-2xl text-[var(--color-heading-text)]">
+                            Our Package
+                        </h2>
+                        <a href="{{ route('package.index') }}"
+                           class="font-sans text-xs text-[var(--color-accent)] flex items-center gap-1
+                                  hover:gap-2 transition-all duration-200">
+                            View all <i class="ti ti-arrow-right text-sm"></i>
+                        </a>
                     </div>
-                    <i class="ti ti-arrow-right text-sm text-[var(--color-border)]
-                              group-hover:text-[var(--color-accent)] group-hover:translate-x-1
-                              transition-all duration-200 shrink-0"></i>
-                </a>
-                @endforeach
+                    @foreach($packagesNav as $pkg)
+                    <a href="{{ route('package.show', $pkg['slug']) }}"
+                       class="group flex items-center justify-between
+                              py-3.5 border-b border-[var(--color-border)]
+                              hover:pl-1.5 transition-all duration-200">
+                        <div class="min-w-0 mr-3">
+                            <p class="font-sans text-sm font-medium text-[var(--color-heading-text)]
+                                       group-hover:text-[var(--color-accent)] transition-colors duration-200 leading-snug truncate">
+                                {{ $pkg['title'] }}
+                            </p>
+                            <p class="font-sans text-xs text-[var(--color-body-text)] mt-0.5">
+                                {{ $pkg['duration'] }}
+                                @if(!empty($pkg['badge']))
+                                    &middot; <span class="text-[var(--color-accent)] font-medium">{{ $pkg['badge'] }}</span>
+                                @endif
+                            </p>
+                        </div>
+                        <i class="ti ti-arrow-right text-sm text-[var(--color-border)]
+                                  group-hover:text-[var(--color-accent)] group-hover:translate-x-1
+                                  transition-all duration-200 shrink-0"></i>
+                    </a>
+                    @endforeach
+                </div>
                 @endif
 
                 @if($hasActivities)
-                <p class="font-sans text-[10px] font-semibold tracking-widest uppercase
-                          text-[var(--color-body-text)] mb-2
-                          {{ $hasPackages ? 'mt-6' : '' }}">
-                    Activities
-                </p>
-                @foreach($activitiesNav as $act)
-                <a href="{{ route('trip.show', $act['slug']) }}"
-                   class="group flex items-center justify-between
-                          py-3.5 border-b border-[var(--color-border)]
-                          hover:pl-1.5 transition-all duration-200">
-                    <div class="min-w-0 mr-3">
-                        <p class="font-sans text-sm font-medium text-[var(--color-heading-text)]
-                                   group-hover:text-[var(--color-accent)] transition-colors duration-200 leading-snug truncate">
-                            {{ $act['title'] }}
-                        </p>
-                        <p class="font-sans text-xs text-[var(--color-body-text)] mt-0.5">
-                            {{ $act['duration'] }}
-                            @if(!empty($act['badge']))
-                                &middot; <span class="text-[var(--color-accent)] font-medium">{{ $act['badge'] }}</span>
-                            @endif
-                        </p>
+                <div>
+                    <div class="flex items-center justify-between mb-5 sm:mb-6
+                                border-b border-[var(--color-border)] pb-4">
+                        <h2 class="font-heading font-bold text-xl sm:text-2xl text-[var(--color-heading-text)]">
+                            Things to Do
+                        </h2>
+                        <a href="{{ route('activity.index') }}"
+                           class="font-sans text-xs text-[var(--color-accent)] flex items-center gap-1
+                                  hover:gap-2 transition-all duration-200">
+                            View all <i class="ti ti-arrow-right text-sm"></i>
+                        </a>
                     </div>
-                    <i class="ti ti-arrow-right text-sm text-[var(--color-border)]
-                              group-hover:text-[var(--color-accent)] group-hover:translate-x-1
-                              transition-all duration-200 shrink-0"></i>
-                </a>
-                @endforeach
+                    @foreach($activitiesNav as $act)
+                    <a href="{{ route('activity.show', $act['slug']) }}"
+                       class="group flex items-center justify-between
+                              py-3.5 border-b border-[var(--color-border)]
+                              hover:pl-1.5 transition-all duration-200">
+                        <div class="min-w-0 mr-3">
+                            <p class="font-sans text-sm font-medium text-[var(--color-heading-text)]
+                                       group-hover:text-[var(--color-accent)] transition-colors duration-200 leading-snug truncate">
+                                {{ $act['title'] }}
+                            </p>
+                            <p class="font-sans text-xs text-[var(--color-body-text)] mt-0.5">
+                                {{ $act['duration'] }}
+                                @if(!empty($act['badge']))
+                                    &middot; <span class="text-[var(--color-accent)] font-medium">{{ $act['badge'] }}</span>
+                                @endif
+                            </p>
+                        </div>
+                        <i class="ti ti-arrow-right text-sm text-[var(--color-border)]
+                                  group-hover:text-[var(--color-accent)] group-hover:translate-x-1
+                                  transition-all duration-200 shrink-0"></i>
+                    </a>
+                    @endforeach
+                </div>
                 @endif
             </div>
-            @endif
 
+            {{-- RIGHT COLUMN — Things to See + Things to Know + More --}}
             <div class="flex flex-col gap-10">
                 @if($destinationsFullmenu->isNotEmpty())
                 <div>
-                    <div class="border-b border-[var(--color-border)] pb-4 mb-5 sm:mb-6">
+                    <div class="flex items-center justify-between mb-5 sm:mb-6
+                                border-b border-[var(--color-border)] pb-4">
                         <h2 class="font-heading font-bold text-xl sm:text-2xl text-[var(--color-heading-text)]">
-                            Destinations
+                            Things to See
                         </h2>
+                        <a href="{{ route('destination.index') }}"
+                           class="font-sans text-xs text-[var(--color-accent)] flex items-center gap-1
+                                  hover:gap-2 transition-all duration-200">
+                            View all <i class="ti ti-arrow-right text-sm"></i>
+                        </a>
                     </div>
                     @foreach($destinationsFullmenu as $dest)
                     <a href="{{ route('trip.index', ['destination' => $dest['slug']]) }}"
@@ -769,6 +893,41 @@
                             </p>
                             <p class="font-sans text-xs text-[var(--color-body-text)] mt-0.5 truncate">
                                 {{ $dest['tagline'] }}
+                            </p>
+                        </div>
+                        <i class="ti ti-arrow-right text-sm text-[var(--color-border)]
+                                  group-hover:text-[var(--color-accent)] group-hover:translate-x-1
+                                  transition-all duration-200 shrink-0"></i>
+                    </a>
+                    @endforeach
+                </div>
+                @endif
+
+                @if($hasBlog)
+                <div>
+                    <div class="flex items-center justify-between mb-5 sm:mb-6
+                                border-b border-[var(--color-border)] pb-4">
+                        <h2 class="font-heading font-bold text-xl sm:text-2xl text-[var(--color-heading-text)]">
+                            Things to Know
+                        </h2>
+                        <a href="{{ route('article.index') }}"
+                           class="font-sans text-xs text-[var(--color-accent)] flex items-center gap-1
+                                  hover:gap-2 transition-all duration-200">
+                            View all <i class="ti ti-arrow-right text-sm"></i>
+                        </a>
+                    </div>
+                    @foreach($postsNav as $post)
+                    <a href="{{ route('article.show', $post['slug']) }}"
+                       class="group flex items-center justify-between
+                              py-3.5 border-b border-[var(--color-border)]
+                              hover:pl-1.5 transition-all duration-200">
+                        <div class="min-w-0 mr-3">
+                            <p class="font-sans text-sm font-medium text-[var(--color-heading-text)]
+                                       group-hover:text-[var(--color-accent)] transition-colors duration-200 leading-snug truncate">
+                                {{ $post['title'] }}
+                            </p>
+                            <p class="font-sans text-xs text-[var(--color-body-text)] mt-0.5">
+                                {{ $post['read_time'] }} min read
                             </p>
                         </div>
                         <i class="ti ti-arrow-right text-sm text-[var(--color-border)]
