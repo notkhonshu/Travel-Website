@@ -17,8 +17,8 @@
 @endphp
 
 <a href="{{ $link }}"
-   class="group flex flex-col rounded-[var(--radius-lg)] overflow-hidden bg-white border border-[var(--color-border,#e5e7eb)] hover:shadow-lg transition-shadow duration-200">
-    <div class="overflow-hidden h-52 sm:h-44 md:h-48">
+   class="group flex flex-col h-full rounded-[var(--radius-lg)] overflow-hidden bg-white border border-[var(--color-border,#e5e7eb)] hover:shadow-lg transition-shadow duration-200">
+    <div class="overflow-hidden h-52 sm:h-44 md:h-48 shrink-0">
         <img src="{{ $image }}" alt="{{ $title }}"
              class="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-350">
     </div>
@@ -37,7 +37,7 @@
                 {{ $excerpt }}
             </p>
             @if($highlight)
-                <div class="flex items-center gap-1.5 mt-2 pt-2 border-t border-[var(--color-border)]">
+                <div class="flex items-center gap-1.5 mt-auto pt-2 border-t border-[var(--color-border)]">
                     <i class="ti ti-star-filled text-amber-400 text-[11px]" aria-hidden="true"></i>
                     <span class="text-[11px] text-[var(--color-body-text)]/70">{{ $highlight }}</span>
                 </div>
@@ -56,7 +56,7 @@
                 {{ $excerpt }}
             </p>
             @if($date || $read_time)
-                <div class="flex items-center gap-3 mt-2 pt-2 border-t border-[var(--color-border)]">
+                <div class="flex items-center gap-3 mt-auto pt-2 border-t border-[var(--color-border)]">
                     @if($date)
                         <span class="inline-flex items-center gap-1 text-[11px] text-[var(--color-body-text)]/60">
                             <i class="ti ti-calendar text-[11px]" aria-hidden="true"></i>
@@ -78,7 +78,7 @@
             <p class="font-sans text-xs text-[var(--color-body-text)] leading-relaxed line-clamp-2 flex-1">
                 {{ $excerpt }}
             </p>
-            <div class="flex flex-col items-end gap-1 mt-2 sm:gap-0.5 sm:mt-1">
+            <div class="flex flex-col items-end gap-1 mt-auto">
                 <span class="font-sans font-semibold text-[11px] text-primary-dark">From</span>
                 <span class="font-sans font-bold text-base sm:text-sm text-secondary">
                     Rp {{ number_format($price, 0, ',', '.') }}

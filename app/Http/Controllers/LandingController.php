@@ -8,8 +8,9 @@ class LandingController extends Controller
     {
         $configData   = config('data');
         $destinations = collect($configData['destinations'] ?? []);
-        $packages     = collect($configData['packages']   ?? []);
-        $activities   = collect($configData['activities'] ?? []);
+        $packages     = collect($configData['packages']    ?? []);
+        $activities   = collect($configData['activities']  ?? []);
+        $posts        = collect(config('blog.posts',       []));
 
         $usedSlugs = $packages->pluck('destination')
                     ->concat($activities->pluck('destination'))
@@ -19,11 +20,12 @@ class LandingController extends Controller
             'has_packages'     => $packages->isNotEmpty(),
             'has_activities'   => $activities->isNotEmpty(),
             'has_destinations' => $usedSlugs->isNotEmpty(),
+            'has_blog'         => $posts->isNotEmpty(),
         ];
 
         $data = [
             'metadata' => [
-                'title'          => config('app.name').'| Bali Tours, Trekking & Adventure Packages',
+                'title'          => config('app.name').' | Bali Tours, Trekking & Adventure Packages',
                 'description'    => "Discover Bali's best adventures with The Bali Guides Adventure — Mount Batur trekking, ATV rides, snorkeling, cultural tours, and more, all with trusted local guides.",
                 'keyword'        => 'bali tours, bali adventure, mount batur trekking, bali activities, the bali guides adventure',
                 'og-title'       => config('app.name'),

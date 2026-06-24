@@ -56,6 +56,18 @@
                 'eyebrow'     => 'Things to do',
                 'title'       => 'Explore Our Activity',
                 'description' => 'Discover exciting activities and unique adventures that let you experience each destination in a fun, authentic, and unforgettable way.',
+                'bg'          => 'bg-black/4'
+            ]
+        ])
+    @endif
+
+    @if ($sections['has_blog'])
+        @include('components.section.type5', [
+            'section_data' => [
+                'id'          => 'blogs',
+                'eyebrow'     => 'Things to know',
+                'title'       => 'Stories & <span class="text-accent">Travel Guides</span>',
+                'description' => 'Honest travel advice, trekking tips, and hidden-gem recommendations written by the guides who live here.',
             ]
         ])
     @endif

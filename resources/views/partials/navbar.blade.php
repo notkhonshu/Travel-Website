@@ -10,8 +10,8 @@
         return $dest;
     });
 
-    $destinationsNav      = $destinations->take(6);
-    $destinationsFullmenu = $destinations->take(5);
+    $destinationsNav      = $destinations->take(4);
+    $destinationsFullmenu = $destinations->take(3);
 
     $packagesNav   = $packages->take(6);
     $activitiesNav = $activities->take(6);
