@@ -66,42 +66,7 @@
                 </p>
             </div>
         @endif
-        <div class="flex items-center justify-between flex-wrap gap-3">
-            @unless($isSimpleMode)
-                <p class="text-sm text-[var(--color-body-text)]/60 m-0">
-                    <span class="font-semibold text-[var(--color-heading-text)]">{{ $listings->count() }}</span>
-                    destinations available
-                </p>
-            @endunless
 
-            @if(!$isSimpleMode)
-                <form method="GET" action="{{ route($indexRoute) }}" class="flex items-center gap-2">
-                    @if($activeCategory !== 'all')
-                        <input type="hidden" name="category" value="{{ $activeCategory }}">
-                    @endif
-                    @if($activeDestination !== '')
-                        <input type="hidden" name="destination" value="{{ $activeDestination }}">
-                    @endif
-                    @if($q)
-                        <input type="hidden" name="q" value="{{ $q }}">
-                    @endif
-                    <label for="tbg-sort" class="text-xs text-[var(--color-body-text)]/50">Sort by</label>
-                    <select
-                        id="tbg-sort"
-                        name="sort"
-                        onchange="this.form.submit()"
-                        class="text-xs border border-[var(--color-border)] rounded-lg px-3 py-1.5
-                            text-[var(--color-heading-text)] bg-white focus:outline-none
-                            focus:ring-2 focus:ring-[var(--color-primary)]/30 cursor-pointer"
-                    >
-                        <option value="default"    @selected($sort === 'default')>Featured</option>
-                        <option value="rating"     @selected($sort === 'rating')>Top Rated</option>
-                        <option value="price_asc"  @selected($sort === 'price_asc')>Price: Low to High</option>
-                        <option value="price_desc" @selected($sort === 'price_desc')>Price: High to Low</option>
-                    </select>
-                </form>
-            @endif
-        </div>
         @if(!$isSimpleMode)
             @if($activeDestination || $q)
                 <div class="flex items-center gap-2 flex-wrap mt-2">
@@ -135,6 +100,7 @@
                 </div>
             @endif
         @endif
+
         @if($isBlogMode && count($categories) > 0)
             <div class="overflow-x-auto scrollbar-none mb-6 mt-6">
                 <div class="flex items-center gap-2 w-max min-w-full pb-1">
@@ -167,36 +133,65 @@
                 </div>
             </div>
         @elseif(!$isSimpleMode)
-            <div class="overflow-x-auto scrollbar-none mb-8 sm:mb-6 mt-6">
-                <div class="flex items-center gap-2 w-max min-w-full pb-1">
-                    @foreach($tabs as $cat)
-                        @php
-                            $isActive  = $activeCategory === $cat['slug'];
-                            $tabParams = array_filter([
-                                'category'    => $cat['slug'] !== 'all' ? $cat['slug'] : null,
-                                'destination' => $activeDestination ?: null,
-                                'sort'        => $sort !== 'default' ? $sort : null,
-                                'q'           => $q ?: null,
-                            ]);
-                            $tabHref = route($indexRoute, $tabParams);
-                        @endphp
-                        <a href="{{ $tabHref }}"
-                           class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium
-                                  border transition-all duration-200
-                                  {{ $isActive
-                                      ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white'
-                                      : 'bg-white border-[var(--color-border)] text-[var(--color-body-text)]/70 hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]'
-                                  }}"
-                        >
-                            @if($cat['slug'] === 'all')
-                                <i class="ti ti-layout-grid text-[13px]" aria-hidden="true"></i>
-                            @endif
-                            {{ $cat['label'] }}
-                        </a>
-                    @endforeach
+            <div class="flex items-center justify-between gap-3 flex-wrap mb-8 sm:mb-6 mt-6">
+                <div class="overflow-x-auto scrollbar-none flex-1 min-w-0">
+                    <div class="flex items-center gap-2 w-max pb-1">
+                        @foreach($tabs as $cat)
+                            @php
+                                $isActive  = $activeCategory === $cat['slug'];
+                                $tabParams = array_filter([
+                                    'category'    => $cat['slug'] !== 'all' ? $cat['slug'] : null,
+                                    'destination' => $activeDestination ?: null,
+                                    'sort'        => $sort !== 'default' ? $sort : null,
+                                    'q'           => $q ?: null,
+                                ]);
+                                $tabHref = route($indexRoute, $tabParams);
+                            @endphp
+                            <a href="{{ $tabHref }}"
+                               class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium
+                                      border transition-all duration-200
+                                      {{ $isActive
+                                          ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white'
+                                          : 'bg-white border-[var(--color-border)] text-[var(--color-body-text)]/70 hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]'
+                                      }}"
+                            >
+                                @if($cat['slug'] === 'all')
+                                    <i class="ti ti-layout-grid text-[13px]" aria-hidden="true"></i>
+                                @endif
+                                {{ $cat['label'] }}
+                            </a>
+                        @endforeach
+                    </div>
                 </div>
+
+                <form method="GET" action="{{ route($indexRoute) }}" class="flex items-center gap-2 shrink-0">
+                    @if($activeCategory !== 'all')
+                        <input type="hidden" name="category" value="{{ $activeCategory }}">
+                    @endif
+                    @if($activeDestination !== '')
+                        <input type="hidden" name="destination" value="{{ $activeDestination }}">
+                    @endif
+                    @if($q)
+                        <input type="hidden" name="q" value="{{ $q }}">
+                    @endif
+                    <label for="tbg-sort" class="text-xs text-[var(--color-body-text)]/50">Sort by</label>
+                    <select
+                        id="tbg-sort"
+                        name="sort"
+                        onchange="this.form.submit()"
+                        class="text-xs border border-[var(--color-border)] rounded-lg px-3 py-1.5
+                            text-[var(--color-heading-text)] bg-white focus:outline-none
+                            focus:ring-2 focus:ring-[var(--color-primary)]/30 cursor-pointer"
+                    >
+                        <option value="default"    @selected($sort === 'default')>Featured</option>
+                        <option value="rating"     @selected($sort === 'rating')>Top Rated</option>
+                        <option value="price_asc"  @selected($sort === 'price_asc')>Price: Low to High</option>
+                        <option value="price_desc" @selected($sort === 'price_desc')>Price: High to Low</option>
+                    </select>
+                </form>
             </div>
         @endif
+
         @if($listings->isNotEmpty())
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-4
                         {{ $isSimpleMode ? 'mt-6' : '' }} pb-10">

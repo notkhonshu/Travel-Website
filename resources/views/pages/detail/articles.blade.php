@@ -5,15 +5,18 @@
 ])
 
 @section('content')
-
     @include('components.section.type8', [
-        'section_data' => [
-            'image'   => asset($post['image']),
-            'title'   => $post['title'],
-            'excerpt' => $post['excerpt'],
-        ]
+        'section_data'   => [
+            'id'         => 'hero',
+            'title'      => $post['title'],
+            'description'=> $post['excerpt'],
+            'background' => [
+                'link'   => asset($post['image']),
+                'alt'    => $post['title'],
+            ],
+            'scroll_to' => '#',
+        ],
     ])
-
     @include('components.section.type16', compact('post', 'related', 'categories', 'recentPosts'))
 
     @include('components.section.type7')
