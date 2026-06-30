@@ -11,7 +11,7 @@
             'description'=> "Have questions or need help planning your Bali adventure? Our friendly team is here to assist you with bookings, custom tours, and travel information.",
             'background' => [
                 'link'   => asset('assets/img/static/beach.jpg'),
-                'alt'    => 'The Bali Guides Adventure',
+                'alt'    => 'Bali Guide Adventure',
             ],
             'scroll_to' => '#contact',
         ],

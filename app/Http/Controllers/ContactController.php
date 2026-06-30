@@ -29,10 +29,10 @@ class ContactController extends Controller
 
         $data = [
             'metadata' => [
-                'title'          => 'Contact Us | The Bali Guides Adventure',
-                'description'    => 'Get in touch with The Bali Guides Adventure for bookings, custom itineraries, or any questions about our Bali tours and activities.',
+                'title'          => 'Contact Us | Bali Guide Adventure',
+                'description'    => 'Get in touch with Bali Guide Adventure for bookings, custom itineraries, or any questions about our Bali tours and activities.',
                 'keyword'        => 'contact the bali guides adventure, bali tour booking, bali travel agent contact',
-                'og-title'       => 'Contact The Bali Guides Adventure',
+                'og-title'       => 'Contact Bali Guide Adventure',
                 'og-description' => 'Reach out to our team for bookings, custom trips, or questions about touring Bali with us.',
                 'og-image'       => 'assets/img/static/beach.jpg',
                 'og-type'        => 'website',

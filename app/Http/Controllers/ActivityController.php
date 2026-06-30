@@ -84,9 +84,9 @@ class ActivityController extends Controller
 
         $data = [
             'metadata' => [
-                'title'          => "{$pageTitle} | The Bali Guides Adventure",
-                'description'    => "Browse {$pageTitle} — discover and book the best guided activities across Bali with The Bali Guides Adventure.",
-                'keyword'        => "bali activities, {$activeDestination}, {$activeCategory}, bali tours, the bali guides adventure",
+                'title'          => "{$pageTitle} | Bali Guide Adventure",
+                'description'    => "Browse {$pageTitle} — discover and book the best guided activities across Bali with Bali Guide Adventure.",
+                'keyword'        => "bali activities, {$activeDestination}, {$activeCategory}, bali tours, bali guide adventure",
                 'og-title'       => $pageTitle,
                 'og-description' => "Explore {$pageTitle} and book your next Bali activity with trusted local guides.",
                 'og-image'       => $listings->first()['image'] ?? 'assets/img/static/beach.jpg',

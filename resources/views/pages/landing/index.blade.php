@@ -9,7 +9,7 @@
             'id'         => 'home_hero',
             'background' => [
                 'link'   => asset('assets/img/static/beach.jpg'),
-                'alt'    => 'The Bali Guides Adventure',
+                'alt'    => 'Bali Guide Adventure',
             ],
             'scroll_to' => '#destinations',
             'search' => [

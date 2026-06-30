@@ -913,3 +913,42 @@ window.heroSearchSubmit = function (heroId, baseUrl) {
     });
 
 })();
+
+/* ══════════════════════════════════════════
+   FAQ ACCORDION
+   ══════════════════════════════════════════ */
+(function () {
+    'use strict';
+
+    const triggers = document.querySelectorAll('.tbg-faq__trigger');
+    if (!triggers.length) return;
+
+    function closeAll() {
+        triggers.forEach(t => {
+            const panelId = t.getAttribute('aria-controls');
+            const panel   = document.getElementById(panelId);
+            const icon    = t.querySelector('.tbg-faq__icon');
+            t.setAttribute('aria-expanded', 'false');
+            if (panel) panel.style.maxHeight = '0';
+            if (icon)  icon.style.transform  = 'rotate(0deg)';
+        });
+    }
+
+    triggers.forEach(trigger => {
+        trigger.addEventListener('click', () => {
+            const panelId = trigger.getAttribute('aria-controls');
+            const panel   = document.getElementById(panelId);
+            const icon    = trigger.querySelector('.tbg-faq__icon');
+            const isOpen  = trigger.getAttribute('aria-expanded') === 'true';
+
+            closeAll();
+
+            if (!isOpen && panel) {
+                trigger.setAttribute('aria-expanded', 'true');
+                panel.style.maxHeight = panel.scrollHeight + 'px';
+                if (icon) icon.style.transform = 'rotate(180deg)';
+            }
+        });
+    });
+
+})();

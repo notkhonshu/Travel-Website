@@ -21,7 +21,7 @@ class TripController extends Controller
 
         $data = [
             'metadata' => [
-                'title'          => "{$trip['title']} - {$trip['duration']} | The Bali Guides Adventure",
+                'title'          => "{$trip['title']} - {$trip['duration']} | Bali Guide Adventure",
                 'description'    => $trip['excerpt'] ?? '',
                 'keyword'        => "{$trip['category']}, {$trip['destination']}, bali tour, {$trip['title']}",
                 'og-title'       => $trip['title'],

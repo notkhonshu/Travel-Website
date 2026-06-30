@@ -86,9 +86,9 @@ class PackageController extends Controller
 
         $data = [
             'metadata' => [
-                'title'          => "{$pageTitle} | The Bali Guides Adventure",
-                'description'    => "Browse {$pageTitle} — book the best guided tour packages across Bali with The Bali Guides Adventure.",
-                'keyword'        => "bali tour packages, {$activeDestination}, {$activeCategory}, bali packages, the bali guides adventure",
+                'title'          => "{$pageTitle} | Bali Guide Adventure",
+                'description'    => "Browse {$pageTitle} — book the best guided tour packages across Bali with Bali Guide Adventure.",
+                'keyword'        => "bali tour packages, {$activeDestination}, {$activeCategory}, bali packages, bali guide adventure",
                 'og-title'       => $pageTitle,
                 'og-description' => "Explore {$pageTitle} and book your next Bali adventure with trusted local guides.",
                 'og-image'       => $listings->first()['image'] ?? 'assets/img/static/beach.jpg',

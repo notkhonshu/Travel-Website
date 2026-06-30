@@ -11,7 +11,7 @@
             'description'=> "Explore a collection of unforgettable experiences, breathtaking landscapes, and authentic adventures captured during our journeys across the Island of the Gods.",
             'background' => [
                 'link'   => asset('assets/img/static/beach.jpg'),
-                'alt'    => 'The Bali Guides Adventure',
+                'alt'    => 'Bali Guide Adventure',
             ],
             'scroll_to' => '#gallery',
         ],

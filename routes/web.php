@@ -11,6 +11,8 @@ use App\Http\Controllers\DestinationController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\LegalController;
+use App\Http\Controllers\FaqController;
 
 Route::get('/', [LandingController::class, 'index'])->name('landing.index');
 Route::get('/about-us', [AboutController::class, 'index'])->name('landing.about');
@@ -29,6 +31,8 @@ Route::get('/packages/{slug}', [TripController::class, 'show'])->name('package.s
 
 Route::get('/destinations', [DestinationController::class, 'index'])->name('destination.index');
 
-
 Route::get('/articles', [BlogController::class, 'index'])->name('article.index');
 Route::get('/articles/{slug}', [BlogController::class, 'show'])->name('article.show');
+
+Route::get('/legal', [LegalController::class, 'index'])->name('legal.index');
+Route::get('/faq', [FaqController::class, 'index'])->name('faq.index');

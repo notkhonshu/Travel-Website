@@ -45,8 +45,8 @@ class BlogController extends Controller
 
         $data = [
             'metadata' => [
-                'title'          => "{$pageTitle} | The Bali Guides Adventure",
-                'description'    => 'Travel guides, adventure tips, cultural insights and wellness stories from Bali — written by local experts at The Bali Guides Adventure.',
+                'title'          => "{$pageTitle} | Bali Guide Adventure",
+                'description'    => 'Travel guides, adventure tips, cultural insights and wellness stories from Bali — written by local experts at Bali Guide Adventure.',
                 'keyword'        => 'bali travel blog, bali guide, bali tips, bali culture, bali adventure',
                 'og-title'       => $pageTitle,
                 'og-description' => 'Explore Bali through the eyes of local guides — travel tips, destination guides, and cultural stories.',

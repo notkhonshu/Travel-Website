@@ -12,7 +12,7 @@
         <meta name="keywords"
             content="{{ isset($data['metadata']['keyword']) ? $data['metadata']['keyword'] . ' ' . config('metadata.keyword') : config('metadata.keyword') }}">
         <meta name="robots" content="index, follow">
-        <meta name="author" content="The Bali Guides Adventure">
+        <meta name="author" content="config('app.name')">
         <meta name="csrf-token" content="{{ csrf_token() }}" />
 
         {{-- Meta Property OG --}}
@@ -82,7 +82,7 @@
             $jsonLd = [
                 '@context'    => 'https://schema.org',
                 '@type'       => 'TouristInformationCenter',
-                'name'        => 'The Bali Guides Adventure',
+                'name'        => 'Bali Guide Adventure',
                 'description' => config('metadata.description'),
                 'image'       => asset('assets/img/metadata/featured_image/image.jpg'),
                 'url'         => route('landing.index'),

@@ -11,7 +11,7 @@
             'description'=> "From volcanic landscapes and tropical waterfalls to cultural treasures and island escapes, we bring you the best adventures Bali has to offer with expert local guidance.",
             'background' => [
                 'link'   => asset('assets/img/static/beach.jpg'),
-                'alt'    => 'The Bali Guides Adventure',
+                'alt'    => 'Bali Guide Adventure',
             ],
             'scroll_to' => '#about-us',
         ],

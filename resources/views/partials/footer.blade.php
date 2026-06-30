@@ -1,20 +1,25 @@
 @php
     $usefulLinks = [
-        ['title' => 'Home',            'link' => route('landing.index')],
-        ['title' => 'About Us',        'link' => route('landing.about')],
-        ['title' => 'Trip',            'link' => route('trip.index')],
-        ['title' => 'Gallery',         'link' => route('gallery.index')],
-        ['title' => 'Contact Us',      'link' => route('landing.contact')],
-        ['title' => 'Partner with Us', 'link' => config('social.customer_service.url_email')],
+        ['title' => 'Home',       'link' => route('landing.index')],
+        ['title' => 'About Us',   'link' => route('landing.about')],
+        ['title' => 'Trip',       'link' => route('trip.index')],
+        ['title' => 'Gallery',    'link' => route('gallery.index')],
+        ['title' => 'Contact Us', 'link' => route('landing.contact')],
+    ];
+
+    $supportLinks = [
+        ['title' => 'Legal Notice',   'link' => route('legal.index')],
+        ['title' => 'FAQ',            'link' => route('faq.index')],
+        ['title' => 'Partner with Us','link' => config('social.customer_service.url_email')],
     ];
 @endphp
 
 <footer id="footer"
     class="relative bg-primary px-4 sm:px-8 md:px-12 lg:px-16 xl:px-24 2xl:px-32 py-14 md:py-20">
     <div class="max-w-[1400px] mx-auto">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 md:gap-8 xl:gap-12
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-8 xl:gap-12
                     pb-10 md:pb-14 border-b border-white/20">
-            <div class="flex flex-col gap-6 sm:col-span-2 md:col-span-1">
+            <div class="flex flex-col gap-6 sm:col-span-2 lg:col-span-1">
                 <div>
                     <h4 class="text-white text-[20px] font-heading font-bold leading-snug text-center md:text-left">
                         {{ config('app.name') }}
@@ -23,8 +28,7 @@
                         We specialize in creating awesome and extraordinary experiences, whether you're looking for thrilling adventures or serene landscapes of Bali or venturing into the cultural wonders of Asia.
                     </p>
                 </div>
-
-                <div class="flex flex-wrap gap-2 justify-ceter md:justify-start">
+                <div class="flex flex-wrap gap-2 justify-center md:justify-start">
                     <a href="{{ config('social.facebook.url') }}" target="_blank" rel="noopener"
                         aria-label="Facebook"
                         class="text-white/70 hover:text-[var(--color-accent)] transition-colors duration-200">
@@ -47,14 +51,33 @@
                 <h5 class="text-white text-[15px] font-semibold tracking-wide uppercase">
                     Useful Links
                 </h5>
-                <nav aria-label="Footer navigation">
+                <nav aria-label="Footer useful links">
                     <ul class="space-y-2">
                         @foreach ($usefulLinks as $item)
                         <li>
                             <a href="{{ $item['link'] }}"
-                            class="group flex items-center gap-1.5
-                                    text-white/70 hover:text-[var(--color-accent)] hover:pl-1.5
-                                    text-[15px] transition-all duration-200">
+                               class="group flex items-center gap-1.5
+                                      text-white/70 hover:text-[var(--color-accent)] hover:pl-1.5
+                                      text-[15px] transition-all duration-200">
+                                {{ $item['title'] }}
+                            </a>
+                        </li>
+                        @endforeach
+                    </ul>
+                </nav>
+            </div>
+            <div class="flex flex-col gap-5">
+                <h5 class="text-white text-[15px] font-semibold tracking-wide uppercase">
+                    Support
+                </h5>
+                <nav aria-label="Footer support links">
+                    <ul class="space-y-2">
+                        @foreach ($supportLinks as $item)
+                        <li>
+                            <a href="{{ $item['link'] }}"
+                               class="group flex items-center gap-1.5
+                                      text-white/70 hover:text-[var(--color-accent)] hover:pl-1.5
+                                      text-[15px] transition-all duration-200">
                                 {{ $item['title'] }}
                             </a>
                         </li>

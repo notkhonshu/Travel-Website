@@ -86,9 +86,9 @@ class ListingController extends Controller
 
         $data = [
             'metadata' => [
-                'title'          => "{$pageTitle} | The Bali Guides Adventure",
-                'description'    => "Browse {$pageTitle} — book the best guided tours and activities across Bali with The Bali Guides Adventure.",
-                'keyword'        => "bali tours, {$activeDestination}, {$activeCategory}, bali activities, the bali guides adventure",
+                'title'          => "{$pageTitle} | Bali Guide Adventure",
+                'description'    => "Browse {$pageTitle} — book the best guided tours and activities across Bali with Bali Guide Adventure.",
+                'keyword'        => "bali tours, {$activeDestination}, {$activeCategory}, bali activities, bali guide adventure",
                 'og-title'       => $pageTitle,
                 'og-description' => "Explore {$pageTitle} and book your next Bali adventure with trusted local guides.",
                 'og-image'       => $listings->first()['image'] ?? 'assets/img/static/beach.jpg',
